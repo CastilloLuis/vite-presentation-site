@@ -40,10 +40,7 @@
       property="og:description"
       content="Senior Web3 Engineer and Tech Lead specializing in dApp development, AI agents, and cross-platform applications. Expert in React, Next.js, blockchain technologies, and product development."
     />
-    <meta
-      property="og:image"
-      content="https://luiscastillo.dev/public/seo-image.png"
-    />
+    <meta property="og:image" content="https://www.kasti.dev/seo-img.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Luis Castillo - Portfolio" />
@@ -61,7 +58,7 @@
     />
     <meta
       property="twitter:image"
-      content="https://luiscastillo.dev/public/seo-image.png"
+      content="https://www.kasti.dev/seo-img.png"
     />
 
     <!-- LinkedIn -->
@@ -75,20 +72,23 @@
     />
     <meta
       property="linkedin:image"
-      content="https://luiscastillo.dev/public/seo-image.png"
+      content="https://www.kasti.dev/seo-img.png"
     />
 
     <!-- Additional Meta Tags -->
     <meta name="theme-color" content="#3C3C3D" />
     <meta name="msapplication-TileColor" content="#3C3C3D" />
-    <meta name="msapplication-TileImage" content="/public/seo-image.png" />
+    <meta
+      name="msapplication-TileImage"
+      content="https://www.kasti.dev/seo-img.png"
+    />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
     <meta name="apple-mobile-web-app-title" content="Luis Castillo" />
-    <link rel="apple-touch-icon" href="/public/seo-image.png" />
+    <link rel="apple-touch-icon" href="https://www.kasti.dev/seo-img.png" />
 
     <script>
       tailwind.config = {
@@ -193,6 +193,13 @@
         transition: all 0.3s ease;
         white-space: nowrap;
         pointer-events: none;
+        display: none;
+      }
+
+      @media (min-width: 768px) {
+        .theme-toggle::after {
+          display: block;
+        }
       }
 
       .theme-toggle:hover::after {
