@@ -3,44 +3,483 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Slabo+13px&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Luis Castillo - Software Engineer. Passionate about technology and leveraging +6 years of experience to build and lead amazing projects.</title>
-    <meta name="description" content="I'm a software engineer with over 6 years of experience in frontend development and leading teams and projects.">
-    <meta name="keywords" content="software engineer, frontend development, team leadership, project management, react, nextjs, vite, swift, development, engineering, ethereum, web3, freelance">
-    <meta name="author" content="LUIS E CASTILLO">
-    <meta name="robots" content="index, follow">
+
+    <!-- Primary Meta Tags -->
+    <title>Luis Castillo - Senior Web3 Engineer | Tech Lead</title>
+    <meta
+      name="title"
+      content="Luis Castillo - Senior Web3 Engineer | Tech Lead"
+    />
+    <meta
+      name="description"
+      content="Senior Web3 Engineer and Tech Lead specializing in dApp development, AI agents, and cross-platform applications. Expert in React, Next.js, blockchain technologies, and product development."
+    />
+    <meta
+      name="keywords"
+      content="web3 engineer, blockchain developer, dapp developer, react native, nextjs, ethereum, polygon, arbitrum, tech lead, ai agents, product development"
+    />
+    <meta name="author" content="LUIS E CASTILLO" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://luiscastillo.dev/" />
+    <meta
+      property="og:title"
+      content="Luis Castillo - Senior Web3 Engineer | Tech Lead"
+    />
+    <meta
+      property="og:description"
+      content="Senior Web3 Engineer and Tech Lead specializing in dApp development, AI agents, and cross-platform applications. Expert in React, Next.js, blockchain technologies, and product development."
+    />
+    <meta
+      property="og:image"
+      content="https://luiscastillo.dev/public/seo-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Luis Castillo - Portfolio" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://luiscastillo.dev/" />
+    <meta
+      property="twitter:title"
+      content="Luis Castillo - Senior Web3 Engineer | Tech Lead"
+    />
+    <meta
+      property="twitter:description"
+      content="Senior Web3 Engineer and Tech Lead specializing in dApp development, AI agents, and cross-platform applications. Expert in React, Next.js, blockchain technologies, and product development."
+    />
+    <meta
+      property="twitter:image"
+      content="https://luiscastillo.dev/public/seo-image.png"
+    />
+
+    <!-- LinkedIn -->
+    <meta
+      property="linkedin:title"
+      content="Luis Castillo - Senior Web3 Engineer | Tech Lead"
+    />
+    <meta
+      property="linkedin:description"
+      content="Senior Web3 Engineer and Tech Lead specializing in dApp development, AI agents, and cross-platform applications. Expert in React, Next.js, blockchain technologies, and product development."
+    />
+    <meta
+      property="linkedin:image"
+      content="https://luiscastillo.dev/public/seo-image.png"
+    />
+
+    <!-- Additional Meta Tags -->
+    <meta name="theme-color" content="#3C3C3D" />
+    <meta name="msapplication-TileColor" content="#3C3C3D" />
+    <meta name="msapplication-TileImage" content="/public/seo-image.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Luis Castillo" />
+    <link rel="apple-touch-icon" href="/public/seo-image.png" />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              web3: "#3C3C3D",
+              frontend: "#007ACC",
+              mobile: "#61DAFB",
+              backend: "#F16822",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .tech-badge {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* Mouse-following card hover animation */
+      .tech-card {
+        transition: transform 0.1s ease-out;
+        transform-origin: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tech-card:hover {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
+          0 0 15px rgba(255, 255, 255, 0.1);
+      }
+
+      /* Enhanced Badge hover animation */
+      .tech-badge {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 1;
+      }
+
+      .tech-badge::before {
+        content: "";
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        background: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.1),
+          rgba(255, 255, 255, 0.3),
+          rgba(255, 255, 255, 0.1)
+        );
+        border-radius: 6px;
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: -1;
+      }
+
+      .tech-badge::after {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        background: radial-gradient(
+          circle at center,
+          rgba(255, 255, 255, 0.4) 0%,
+          rgba(255, 255, 255, 0) 70%
+        );
+        border-radius: 8px;
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: -2;
+      }
+
+      .tech-badge:hover {
+        transform: translateY(-4px) scale(1.05);
+        filter: brightness(1.15) saturate(1.2);
+      }
+
+      .tech-badge:hover::before {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+
+      .tech-badge:hover::after {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".tech-card");
+
+        cards.forEach((card) => {
+          card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+          });
+
+          card.addEventListener("mouseleave", () => {
+            card.style.transform =
+              "perspective(1000px) rotateX(0) rotateY(0) translateZ(0)";
+          });
+        });
+      });
+    </script>
   </head>
-  <body class="flex">
-    <div id="app">
-      <h1>Luis Castillo</h1>
-      <div class="flex bio">
-        <span>Software Engineer. Passionate about using technology to build and lead amazing frontend projects, leveraging over 6 years of experience in the field.</span>
+  <body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div
+        class="flex flex-col items-center justify-center min-h-[calc(100vh-6rem)]"
+      >
+        <header class="text-center mb-16">
+          <h1 class="text-5xl font-bold text-gray-900 mb-6 font-mono">
+            kasti.dev
+          </h1>
+          <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-sm p-8">
+            <p class="text-lg text-gray-600">
+              Senior Web3 Engineer and Tech Lead with a passion for AI and
+              product development. Specializing in dApp development, AI agents,
+              and cross-platform applications. Extensive experience with
+              Next.js, React, TypeScript, and blockchain technologies.
+            </p>
+          </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+          <section
+            class="tech-card bg-gradient-to-br from-web3 to-purple-600 rounded-2xl p-8 text-white"
+          >
+            <h2 class="text-2xl font-semibold mb-6 text-center font-mono">
+              Web3 Stack
+            </h2>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <img
+                src="https://img.shields.io/badge/wagmi-14151A?style=for-the-badge&logo=wagmi&logoColor=white"
+                alt="wagmi"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/viem-3775E0?style=for-the-badge&logo=viem&logoColor=white"
+                alt="viem"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/ethers.js-1D4A7C?style=for-the-badge&logo=ethers&logoColor=white"
+                alt="Ethers.js"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Web3.js-F16822?style=for-the-badge&logo=web3.js&logoColor=white"
+                alt="Web3.js"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/The_Graph-0C0A1C?style=for-the-badge&logo=thegraph&logoColor=white"
+                alt="The Graph"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/RainbowKit-032463?style=for-the-badge&logo=rainbow&logoColor=white"
+                alt="RainbowKit"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/WalletConnect-3B99FC?style=for-the-badge&logo=walletconnect&logoColor=white"
+                alt="WalletConnect"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Gold_Sky-0C0A1C?style=for-the-badge&logo=goldsky&logoColor=orange"
+                alt="Gold Sky"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Ethereum-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white"
+                alt="Ethereum"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Polygon-8247E5?style=for-the-badge&logo=polygon&logoColor=white"
+                alt="Polygon"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Arbitrum-12AAFF?style=for-the-badge&logo=arbitrum&logoColor=white"
+                alt="Arbitrum"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Optimism-FF0420?style=for-the-badge&logo=optimism&logoColor=white"
+                alt="Optimism"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/zkSync-1E69FF?style=for-the-badge&logo=zksync&logoColor=white"
+                alt="zkSync"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Base-0052FF?style=for-the-badge&logo=base&logoColor=white"
+                alt="Base"
+                class="tech-badge"
+              />
+            </div>
+          </section>
+
+          <section
+            class="tech-card bg-gradient-to-br from-frontend to-blue-400 rounded-2xl p-8 text-white"
+          >
+            <h2 class="text-2xl font-semibold mb-6 text-center font-mono">
+              Frontend Stack
+            </h2>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <img
+                src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"
+                alt="Next.js"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"
+                alt="React"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white"
+                alt="TypeScript"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Tailwind-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"
+                alt="Tailwind"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Styled_Components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white"
+                alt="Styled Components"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/ShadcnUI-000000?style=for-the-badge&logo=shadcnui&logoColor=white"
+                alt="ShadcnUI"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Radix_UI-161618?style=for-the-badge&logo=radix-ui&logoColor=white"
+                alt="Radix UI"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/framer_motion-0055FF?style=for-the-badge&logo=framer&logoColor=white"
+                alt="Framer Motion"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=react-query&logoColor=white"
+                alt="React Query"
+                class="tech-badge"
+              />
+            </div>
+          </section>
+
+          <section
+            class="tech-card bg-gradient-to-br from-mobile to-blue-600 rounded-2xl p-8 text-white"
+          >
+            <h2 class="text-2xl font-semibold mb-6 text-center font-mono">
+              Mobile Development
+            </h2>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <img
+                src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"
+                alt="React Native"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"
+                alt="Flutter"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Swift-FA7343?style=for-the-badge&logo=swift&logoColor=white"
+                alt="Swift"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white"
+                alt="Expo"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Mobile_Wallet_SDKs-232F3E?style=for-the-badge"
+                alt="Mobile Wallet SDKs"
+                class="tech-badge"
+              />
+            </div>
+          </section>
+
+          <section
+            class="tech-card bg-gradient-to-br from-backend to-orange-400 rounded-2xl p-8 text-white"
+          >
+            <h2 class="text-2xl font-semibold mb-6 text-center font-mono">
+              Backend & Supporting Skills
+            </h2>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <img
+                src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"
+                alt="Node.js"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"
+                alt="Python"
+                class="tech-badge"
+              />
+              <img
+                src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white"
+                alt="Express"
+                class="tech-badge"
+              />
+            </div>
+          </section>
+        </div>
+
+        <section class="mt-16 text-center">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4 font-mono">
+            Let's Build Something Amazing Together
+          </h2>
+          <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            I'm always open to discussing new projects, creative ideas, or
+            opportunities to be part of your vision.
+          </p>
+          <div class="flex flex-wrap gap-4 justify-center">
+            <a
+              href="https://discord.com/users/iluiscastillo"
+              target="_blank"
+              class="hover:opacity-80 transition-opacity"
+            >
+              <img
+                src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"
+                alt="Discord: iluiscastillo"
+                class="tech-badge"
+              />
+            </a>
+            <a
+              href="https://t.me/prolcjs"
+              target="_blank"
+              class="hover:opacity-80 transition-opacity"
+            >
+              <img
+                src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white"
+                alt="Telegram: prolcjs"
+                class="tech-badge"
+              />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/luis-eduardo-castillo-55a02b170/"
+              target="_blank"
+              class="hover:opacity-80 transition-opacity"
+            >
+              <img
+                src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"
+                alt="LinkedIn: Luis Eduardo Castillo"
+                class="tech-badge"
+              />
+            </a>
+          </div>
+        </section>
+
+        <footer class="mt-16 text-center text-gray-500">
+          <p>© 2024 Luis Castillo. All rights reserved.</p>
+        </footer>
       </div>
-      <div class="flex card-container">
-        <div class="flex"><span>React</span></div>
-        <div class="flex"><span>Next Js</span></div>
-        <div class="flex"><span>Svelte</span></div>
-        <div class="flex"><span>Angular</span></div>
-        <div class="flex"><span>Swift</span></div>
-        <div class="flex"><span>Ethereum</span></div>
-      </div>
-      <div>
-        <a target="_blank" href="https://github.com/castilloluis">
-          <img src="https://ghchart.rshah.org/castilloluis" alt="github.com/castilloluis" />
-        </a>
-      </div>
-      <br />
-      <a target="_blank" href="https://github.com/castilloluis">
-        <i class="fa fa-github"></i>
-      </a>
-      <a target="_blank" href="https://t.me/prolcjs">
-        <i class="fa fa-telegram"></i>
-      </a>
     </div>
   </body>
 </html>
