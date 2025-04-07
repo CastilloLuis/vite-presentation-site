@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
@@ -109,16 +109,194 @@
       };
     </script>
     <style>
+      :root {
+        --bg-primary: #f9fafb;
+        --text-primary: #111827;
+        --text-secondary: #4b5563;
+        --card-bg: #ffffff;
+        --card-border: #e5e7eb;
+        --gradient-start: #3c3c3d;
+        --gradient-end: #9333ea;
+        --gradient-start-frontend: #007acc;
+        --gradient-end-frontend: #60a5fa;
+        --gradient-start-mobile: #61dafb;
+        --gradient-end-mobile: #2563eb;
+        --gradient-start-backend: #f16822;
+        --gradient-end-backend: #fb923c;
+      }
+
+      .dark {
+        --bg-primary: #111827;
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --card-bg: #1f2937;
+        --card-border: #374151;
+        --gradient-start: #1f2937;
+        --gradient-end: #7e22ce;
+        --gradient-start-frontend: #0369a1;
+        --gradient-end-frontend: #1d4ed8;
+        --gradient-start-mobile: #0ea5e9;
+        --gradient-end-mobile: #1e40af;
+        --gradient-start-backend: #c2410c;
+        --gradient-end-backend: #ea580c;
+      }
+
       body {
         font-family: "Inter", sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
+
       .tech-badge {
         font-family: "JetBrains Mono", monospace;
       }
 
+      /* Simple Theme Toggle Button with Tooltip */
+      .theme-toggle {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: var(--card-bg);
+        border: 2px solid var(--card-border);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .theme-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .theme-toggle::after {
+        content: "Toggle theme";
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        color: var(--text-primary);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+
+      .theme-toggle:hover::after {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .theme-toggle svg {
+        width: 1rem;
+        height: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .sun-icon {
+        color: #f59e0b;
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .moon-icon {
+        color: #3b82f6;
+        opacity: 0;
+        transform: scale(0);
+        position: absolute;
+      }
+
+      .dark .sun-icon {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      .dark .moon-icon {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* Ensure proper contrast in both modes */
+      .light .theme-toggle {
+        background: #ffffff;
+        border-color: #e5e7eb;
+      }
+
+      .dark .theme-toggle {
+        background: #1f2937;
+        border-color: #374151;
+      }
+
+      /* Dark mode specific styles */
+      .dark .bg-gray-50 {
+        background-color: var(--bg-primary) !important;
+      }
+
+      .dark .bg-white {
+        background-color: var(--card-bg) !important;
+      }
+
+      .dark .text-gray-600 {
+        color: var(--text-secondary) !important;
+      }
+
+      .dark .text-gray-900 {
+        color: var(--text-primary) !important;
+      }
+
+      .dark .text-gray-500 {
+        color: var(--text-secondary) !important;
+      }
+
+      /* Tech card gradients */
+      .tech-card.web3 {
+        background: linear-gradient(
+          135deg,
+          var(--gradient-start),
+          var(--gradient-end)
+        ) !important;
+      }
+
+      .tech-card.frontend {
+        background: linear-gradient(
+          135deg,
+          var(--gradient-start-frontend),
+          var(--gradient-end-frontend)
+        ) !important;
+      }
+
+      .tech-card.mobile {
+        background: linear-gradient(
+          135deg,
+          var(--gradient-start-mobile),
+          var(--gradient-end-mobile)
+        ) !important;
+      }
+
+      .tech-card.backend {
+        background: linear-gradient(
+          135deg,
+          var(--gradient-start-backend),
+          var(--gradient-end-backend)
+        ) !important;
+      }
+
       /* Mouse-following card hover animation */
       .tech-card {
-        transition: transform 0.1s ease-out;
+        transition: transform 0.1s ease-out, background-color 0.3s ease;
         transform-origin: center;
         position: relative;
         overflow: hidden;
@@ -189,7 +367,30 @@
       }
     </style>
     <script>
+      // Theme toggle functionality
       document.addEventListener("DOMContentLoaded", () => {
+        const themeToggle = document.getElementById("theme-toggle");
+        const html = document.documentElement;
+        const currentYear = document.getElementById("current-year");
+
+        // Set current year
+        currentYear.textContent = new Date().getFullYear();
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          html.classList.add(savedTheme);
+        } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          html.classList.add("dark");
+        }
+
+        themeToggle.addEventListener("click", () => {
+          html.classList.toggle("dark");
+          const theme = html.classList.contains("dark") ? "dark" : "light";
+          localStorage.setItem("theme", theme);
+        });
+
+        // Mouse-following card hover animation
         const cards = document.querySelectorAll(".tech-card");
 
         cards.forEach((card) => {
@@ -216,6 +417,32 @@
     </script>
   </head>
   <body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <!-- Simple Theme Toggle Button -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+      <svg
+        class="sun-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+          clip-rule="evenodd"
+        />
+      </svg>
+      <svg
+        class="moon-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+        />
+      </svg>
+    </button>
+
     <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div
         class="flex flex-col items-center justify-center min-h-[calc(100vh-6rem)]"
@@ -224,7 +451,9 @@
           <h1 class="text-5xl font-bold text-gray-900 mb-6 font-mono">
             kasti.dev
           </h1>
-          <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-sm p-8">
+          <div
+            class="max-w-2xl mx-auto bg-white rounded-xl shadow-sm p-8 bio-card"
+          >
             <p class="text-lg text-gray-600">
               Senior Web3 Engineer and Tech Lead with a passion for AI and
               product development. Specializing in dApp development, AI agents,
@@ -235,9 +464,7 @@
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-          <section
-            class="tech-card bg-gradient-to-br from-web3 to-purple-600 rounded-2xl p-8 text-white"
-          >
+          <section class="tech-card web3 rounded-2xl p-8 text-white">
             <h2 class="text-2xl font-semibold mb-6 text-center font-mono">
               Web3 Stack
             </h2>
@@ -315,9 +542,7 @@
             </div>
           </section>
 
-          <section
-            class="tech-card bg-gradient-to-br from-frontend to-blue-400 rounded-2xl p-8 text-white"
-          >
+          <section class="tech-card frontend rounded-2xl p-8 text-white">
             <h2 class="text-2xl font-semibold mb-6 text-center font-mono">
               Frontend Stack
             </h2>
@@ -370,9 +595,7 @@
             </div>
           </section>
 
-          <section
-            class="tech-card bg-gradient-to-br from-mobile to-blue-600 rounded-2xl p-8 text-white"
-          >
+          <section class="tech-card mobile rounded-2xl p-8 text-white">
             <h2 class="text-2xl font-semibold mb-6 text-center font-mono">
               Mobile Development
             </h2>
@@ -405,9 +628,7 @@
             </div>
           </section>
 
-          <section
-            class="tech-card bg-gradient-to-br from-backend to-orange-400 rounded-2xl p-8 text-white"
-          >
+          <section class="tech-card backend rounded-2xl p-8 text-white">
             <h2 class="text-2xl font-semibold mb-6 text-center font-mono">
               Backend & Supporting Skills
             </h2>
@@ -477,7 +698,10 @@
         </section>
 
         <footer class="mt-16 text-center text-gray-500">
-          <p>© 2024 Luis Castillo. All rights reserved.</p>
+          <p>
+            © <span id="current-year"></span> Luis Castillo. All rights
+            reserved.
+          </p>
         </footer>
       </div>
     </div>
