@@ -1,10 +1,35 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Hero from './components/Hero'
 import TechSection from './components/TechSection'
 import SocialLinks from './components/SocialLinks'
+import ThemeToggle from './components/ThemeToggle'
+import './style.css'
 
 
 function App() {
+    const [theme, setTheme] = useState('light')
+
+    useEffect(() => {
+        // Check local storage or system preference
+        const savedTheme = localStorage.getItem('theme')
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+
+        if (savedTheme) {
+            setTheme(savedTheme)
+            document.documentElement.setAttribute('data-theme', savedTheme)
+        } else if (systemPrefersDark) {
+            setTheme('dark')
+            document.documentElement.setAttribute('data-theme', 'dark')
+        }
+    }, [])
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light'
+        setTheme(newTheme)
+        document.documentElement.setAttribute('data-theme', newTheme)
+        localStorage.setItem('theme', newTheme)
+    }
+
     const web3Stack = [
         { name: 'Wagmi', slug: 'wagmi' },
         { name: 'WalletConnect', slug: 'walletconnect' },
@@ -44,6 +69,7 @@ function App() {
 
     return (
         <main>
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <div className="bento-grid">
                 {/* Header Area */}
                 <div className="grid-item hero-span">

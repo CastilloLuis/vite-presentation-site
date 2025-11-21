@@ -33,16 +33,24 @@ const Hero = () => {
 
     React.useEffect(() => {
         let currentIndex = 0
-        const interval = setInterval(() => {
-            if (currentIndex <= fullText.length) {
-                setText(fullText.slice(0, currentIndex))
-                currentIndex++
-            } else {
-                clearInterval(interval)
-            }
-        }, 100) // Typing speed
+        let interval;
 
-        return () => clearInterval(interval)
+        // Wait 0.5s before starting
+        const startTimeout = setTimeout(() => {
+            interval = setInterval(() => {
+                if (currentIndex <= fullText.length) {
+                    setText(fullText.slice(0, currentIndex))
+                    currentIndex++
+                } else {
+                    clearInterval(interval)
+                }
+            }, 100) // Typing speed
+        }, 500)
+
+        return () => {
+            clearTimeout(startTimeout)
+            if (interval) clearInterval(interval)
+        }
     }, [])
 
     return (
@@ -56,7 +64,13 @@ const Hero = () => {
             textAlign: 'center', // Center text
             padding: '0 1rem'
         }}>
-            <div style={{ position: 'relative', flexShrink: 0, perspective: '1000px' }}>
+            <div style={{
+                position: 'relative',
+                flexShrink: 0,
+                perspective: '1000px',
+                width: '180px', // Enforce width for centering context
+                height: '180px' // Enforce height
+            }}>
                 <motion.div
                     style={{
                         position: 'relative',
@@ -97,38 +111,25 @@ const Hero = () => {
                         }}
                     />
 
-                    {/* Speech Bubble - Attached to the 3D container */}
+                </motion.div>
+
+                {/* Speech Bubble - Moved outside 3D container to stay flat */}
+                <div className="speech-bubble-container">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 10, x: -10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+                        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
                         transition={{
                             type: "spring",
                             stiffness: 300,
                             damping: 25,
-                            delay: 0.2
+                            delay: 0.7
                         }}
-                        style={{
-                            position: 'absolute',
-                            top: '-40px',
-                            left: '140px',
-                            backgroundColor: '#1a1a1a',
-                            color: 'white',
-                            padding: '10px 18px',
-                            borderRadius: '16px',
-                            borderBottomLeftRadius: '2px',
-                            fontWeight: '500',
-                            fontSize: '0.85rem',
-                            whiteSpace: 'nowrap',
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                            zIndex: 10,
-                            fontFamily: 'var(--font-mono)',
-                            transform: 'translateZ(40px)' // Pop out even more
-                        }}
+                        className="speech-bubble"
                     >
                         {text}
-                        <span className="cursor" style={{ backgroundColor: 'white' }}></span>
+                        <span className="cursor"></span>
                     </motion.div>
-                </motion.div>
+                </div>
             </div>
 
             <div style={{ maxWidth: '600px' }}>
@@ -144,8 +145,7 @@ const Hero = () => {
                     fontFamily: 'var(--font-space)',
                     fontSize: '14px',
                     textTransform: 'uppercase',
-                    lineHeight: '1.6',
-                    color: '#4a4a4a'
+                    lineHeight: '1.6'
                 }}>
                     SENIOR SOFTWARE ENGINEER AND TECH LEAD SPECIALIZING IN AI, BLOCKCHAIN, AND PRODUCT DEVELOPMENT. I BUILD SCALABLE CROSS-PLATFORM APPLICATIONS USING MODERN TECH STACKS.
                 </p>
