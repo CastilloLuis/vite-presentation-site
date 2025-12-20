@@ -32,8 +32,14 @@
   --bubble-text: #000000;
   --shadow-color: rgba(255, 255, 255, 0.1);
   /* More gray shadow */
-  --badge-border: rgba(255, 255, 255, 0.5);
+  --badge-border: rgba(255, 255, 255, 0.35);
   /* Stronger border for differentiation in dark mode */
+}
+
+/* Dark mode: visible badge border */
+[data-theme='dark'] .badge {
+  border: 1.5px solid #d1d5db;
+  border-color: #d1d5db;
 }
 
 * {

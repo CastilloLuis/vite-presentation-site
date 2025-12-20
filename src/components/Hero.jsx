@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'framer-motion'
 
 const Hero = () => {
     const [text, setText] = React.useState('')
@@ -114,7 +114,8 @@ const Hero = () => {
                 </motion.div>
 
                 {/* Speech Bubble - Moved outside 3D container to stay flat */}
-                <div className="speech-bubble-container">
+                {/* Hidden for now but component kept for future use */}
+                <div className="speech-bubble-container" style={{ display: 'none' }}>
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8, y: 10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
