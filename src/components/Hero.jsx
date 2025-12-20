@@ -1,99 +1,16 @@
 import React from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 
-// Orbiting social icons configuration
+// Orbiting tech icons configuration
 const orbitingIcons = [
-    { name: 'GitHub', slug: 'github', url: 'https://github.com/castilloluis', duration: 12, delay: 0 },
-    { name: 'Discord', slug: 'discord', url: 'https://discord.com/users/iluiscastillo', duration: 15, delay: -5 },
-    { name: 'Telegram', slug: 'telegram', url: 'https://t.me/prolcjs', duration: 18, delay: -10 }
+    { name: 'Next.js', slug: 'nextdotjs' },
+    { name: 'TypeScript', slug: 'typescript' },
+    { name: 'JavaScript', slug: 'javascript' },
+    { name: 'Python', slug: 'python' },
+    { name: 'Ethereum', slug: 'ethereum' }
 ]
 
-const OrbitingIcon = ({ icon, orbitRadius, index, total }) => {
-    // Calculate initial angle offset so icons are evenly distributed
-    const angleOffset = (360 / total) * index
-
-    return (
-        <motion.div
-            className="orbit-path"
-            style={{
-                position: 'absolute',
-                width: orbitRadius * 2,
-                height: orbitRadius * 2,
-                top: '50%',
-                left: '50%',
-                marginLeft: -orbitRadius,
-                marginTop: -orbitRadius,
-                pointerEvents: 'none'
-            }}
-            animate={{ rotate: 360 }}
-            transition={{
-                duration: icon.duration,
-                repeat: Infinity,
-                ease: 'linear',
-                delay: icon.delay
-            }}
-        >
-            <motion.a
-                href={icon.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="orbiting-icon"
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: '50%',
-                    marginLeft: -20,
-                    width: 40,
-                    height: 40,
-                    borderRadius: '50%',
-                    background: '#ffffff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15), 0 0 40px rgba(66, 133, 244, 0.1)',
-                    border: '2px solid #e5e7eb',
-                    cursor: 'pointer',
-                    pointerEvents: 'auto',
-                    transform: `rotate(${angleOffset}deg)`,
-                    transformOrigin: `50% ${orbitRadius}px`
-                }}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{
-                    delay: 0.5 + index * 0.15,
-                    type: 'spring',
-                    stiffness: 200,
-                    damping: 15
-                }}
-                whileHover={{
-                    scale: 1.3,
-                    boxShadow: '0 8px 30px rgba(0, 0, 0, 0.25), 0 0 60px rgba(66, 133, 244, 0.3)',
-                    transition: { duration: 0.15, ease: 'easeOut' }
-                }}
-                whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-            >
-                {/* Counter-rotate the icon to keep it upright */}
-                <motion.img
-                    src={`https://cdn.simpleicons.org/${icon.slug}`}
-                    alt={icon.name}
-                    style={{
-                        width: 20,
-                        height: 20,
-                        filter: 'grayscale(30%)',
-                        transition: 'filter 0.3s ease'
-                    }}
-                    animate={{ rotate: -360 }}
-                    transition={{
-                        duration: icon.duration,
-                        repeat: Infinity,
-                        ease: 'linear',
-                        delay: icon.delay
-                    }}
-                />
-            </motion.a>
-        </motion.div>
-    )
-}
+const ORBIT_DURATION = 20 // All icons orbit together at this speed (seconds)
 
 const Hero = () => {
     const [text, setText] = React.useState('')
@@ -163,30 +80,10 @@ const Hero = () => {
             <div style={{
                 position: 'relative',
                 flexShrink: 0,
-                perspective: '1000px',
-                width: '150px', // Reduced size
-                height: '150px' // Reduced size
+                width: '150px',
+                height: '150px'
             }}>
-                {/* Orbiting Social Icons */}
-                <div className="orbit-container" style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    width: 0,
-                    height: 0,
-                    zIndex: 20
-                }}>
-                    {orbitingIcons.map((icon, index) => (
-                        <OrbitingIcon
-                            key={icon.slug}
-                            icon={icon}
-                            orbitRadius={orbitRadius}
-                            index={index}
-                            total={orbitingIcons.length}
-                        />
-                    ))}
-                </div>
-
+                {/* Profile image with 3D tilt */}
                 <motion.div
                     style={{
                         position: 'relative',
@@ -196,7 +93,8 @@ const Hero = () => {
                         rotateY: springRotateY,
                         transformStyle: 'preserve-3d',
                         cursor: 'pointer',
-                        zIndex: 1
+                        zIndex: 1,
+                        perspective: '1000px'
                     }}
                 >
                     {/* Main Image */}
@@ -214,6 +112,85 @@ const Hero = () => {
                         }}
                     />
 
+                </motion.div>
+
+                {/* Orbiting Tech Icons - single rotating container keeps all icons in sync */}
+                <motion.div 
+                    className="orbit-container"
+                    style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        width: orbitRadius * 2,
+                        height: orbitRadius * 2,
+                        marginLeft: -orbitRadius,
+                        marginTop: -orbitRadius,
+                        zIndex: 100
+                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{
+                        duration: ORBIT_DURATION,
+                        repeat: Infinity,
+                        ease: 'linear'
+                    }}
+                >
+                    {orbitingIcons.map((icon, index) => {
+                        // Position each icon at a fixed angle around the circle
+                        const angle = (360 / orbitingIcons.length) * index
+                        const angleRad = (angle * Math.PI) / 180
+                        const x = Math.sin(angleRad) * orbitRadius
+                        const y = -Math.cos(angleRad) * orbitRadius
+                        
+                        return (
+                            <motion.div
+                                key={icon.slug}
+                                className="orbiting-icon"
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    marginLeft: -18,
+                                    marginTop: -18,
+                                    x,
+                                    y,
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: '50%',
+                                    background: '#ffffff',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15), 0 0 40px rgba(66, 133, 244, 0.1)',
+                                    border: '2px solid #e5e7eb',
+                                    pointerEvents: 'none'
+                                }}
+                                initial={{ scale: 0, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{
+                                    delay: 0.5 + index * 0.1,
+                                    type: 'spring',
+                                    stiffness: 200,
+                                    damping: 15
+                                }}
+                            >
+                                {/* Counter-rotate to keep icon upright */}
+                                <motion.img
+                                    src={`https://cdn.simpleicons.org/${icon.slug}`}
+                                    alt={icon.name}
+                                    style={{
+                                        width: 18,
+                                        height: 18
+                                    }}
+                                    animate={{ rotate: -360 }}
+                                    transition={{
+                                        duration: ORBIT_DURATION,
+                                        repeat: Infinity,
+                                        ease: 'linear'
+                                    }}
+                                />
+                            </motion.div>
+                        )
+                    })}
                 </motion.div>
 
                 {/* Speech Bubble - Moved outside 3D container to stay flat */}
