@@ -407,3 +407,31 @@ footer {
     transform: translateX(-50%);
   }
 }
+
+/* Orbiting Icons Styles */
+.orbit-container {
+  pointer-events: none;
+}
+
+.orbiting-icon {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.orbiting-icon img {
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.orbiting-icon:hover img {
+  filter: grayscale(0%) !important;
+  transform: scale(1.1);
+}
+
+
+/* Mobile: smaller orbit */
+@media (max-width: 768px) {
+  .orbit-container {
+    transform: scale(0.75);
+  }
+}
