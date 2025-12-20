@@ -1,17 +1,6 @@
 import React from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 
-// Orbiting tech icons configuration
-const orbitingIcons = [
-    { name: 'Next.js', slug: 'nextdotjs' },
-    { name: 'TypeScript', slug: 'typescript' },
-    { name: 'JavaScript', slug: 'javascript' },
-    { name: 'Python', slug: 'python' },
-    { name: 'Ethereum', slug: 'ethereum' }
-]
-
-const ORBIT_DURATION = 20 // All icons orbit together at this speed (seconds)
-
 const Hero = () => {
     const [text, setText] = React.useState('')
     const fullText = "Hey there! Welcome👋"
@@ -64,8 +53,6 @@ const Hero = () => {
         }
     }, [])
 
-    const orbitRadius = 115 // Distance from center to orbiting icons
-
     return (
         <div className="hero-content" style={{
             display: 'flex',
@@ -112,85 +99,6 @@ const Hero = () => {
                         }}
                     />
 
-                </motion.div>
-
-                {/* Orbiting Tech Icons - single rotating container keeps all icons in sync */}
-                <motion.div 
-                    className="orbit-container"
-                    style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        width: orbitRadius * 2,
-                        height: orbitRadius * 2,
-                        marginLeft: -orbitRadius,
-                        marginTop: -orbitRadius,
-                        zIndex: 100
-                    }}
-                    animate={{ rotate: 360 }}
-                    transition={{
-                        duration: ORBIT_DURATION,
-                        repeat: Infinity,
-                        ease: 'linear'
-                    }}
-                >
-                    {orbitingIcons.map((icon, index) => {
-                        // Position each icon at a fixed angle around the circle
-                        const angle = (360 / orbitingIcons.length) * index
-                        const angleRad = (angle * Math.PI) / 180
-                        const x = Math.sin(angleRad) * orbitRadius
-                        const y = -Math.cos(angleRad) * orbitRadius
-                        
-                        return (
-                            <motion.div
-                                key={icon.slug}
-                                className="orbiting-icon"
-                                style={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    left: '50%',
-                                    marginLeft: -18,
-                                    marginTop: -18,
-                                    x,
-                                    y,
-                                    width: 36,
-                                    height: 36,
-                                    borderRadius: '50%',
-                                    background: '#ffffff',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15), 0 0 40px rgba(66, 133, 244, 0.1)',
-                                    border: '2px solid #e5e7eb',
-                                    pointerEvents: 'none'
-                                }}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{
-                                    delay: 0.5 + index * 0.1,
-                                    type: 'spring',
-                                    stiffness: 200,
-                                    damping: 15
-                                }}
-                            >
-                                {/* Counter-rotate to keep icon upright */}
-                                <motion.img
-                                    src={`https://cdn.simpleicons.org/${icon.slug}`}
-                                    alt={icon.name}
-                                    style={{
-                                        width: 18,
-                                        height: 18
-                                    }}
-                                    animate={{ rotate: -360 }}
-                                    transition={{
-                                        duration: ORBIT_DURATION,
-                                        repeat: Infinity,
-                                        ease: 'linear'
-                                    }}
-                                />
-                            </motion.div>
-                        )
-                    })}
                 </motion.div>
 
                 {/* Speech Bubble - Moved outside 3D container to stay flat */}

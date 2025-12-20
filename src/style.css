@@ -263,7 +263,7 @@ h1 {
 .social-icons-row {
   display: flex;
   justify-content: center;
-  gap: 1.25rem;
+  gap: 1rem;
   margin-top: 0.5rem;
 }
 
@@ -271,32 +271,29 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .social-icon-img {
-  width: 22px;
-  height: 22px;
-  filter: grayscale(100%);
-  opacity: 0.5;
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .social-icon-link:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-  border-color: var(--hover-color);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .social-icon-link:hover .social-icon-img {
-  filter: grayscale(0%);
   opacity: 1;
-  transform: scale(1.1);
 }
 
 .social-links {
@@ -445,30 +442,5 @@ footer {
   .speech-bubble::after {
     left: 50%;
     transform: translateX(-50%);
-  }
-}
-
-/* Orbiting Icons Styles */
-.orbit-container {
-  pointer-events: none;
-  z-index: 100 !important;
-  isolation: isolate;
-}
-
-.orbit-path {
-  z-index: 100 !important;
-}
-
-.orbiting-icon {
-  z-index: 100 !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-
-/* Mobile: smaller orbit */
-@media (max-width: 768px) {
-  .orbit-container {
-    transform: scale(0.75);
   }
 }
