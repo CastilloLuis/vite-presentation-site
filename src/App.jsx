@@ -1,103 +1,42 @@
 import React, { useState, useEffect } from 'react'
-import Hero from './components/Hero'
-import TechSection from './components/TechSection'
-import SocialLinks from './components/SocialLinks'
-import ThemeToggle from './components/ThemeToggle'
+import { AnimatePresence } from 'framer-motion'
+import TabNav from './components/TabNav'
+import CharacterTab from './components/CharacterTab'
+import SkillsTab from './components/SkillsTab'
+import QuestsTab from './components/QuestsTab'
+import StatsTab from './components/StatsTab'
 import './style.css'
 
-
 function App() {
-    const [theme, setTheme] = useState('light')
+    const [activeTab, setActiveTab] = useState('Character')
+    const [theme, setTheme] = useState('dark')
 
     useEffect(() => {
-        // Check local storage or system preference
-        const savedTheme = localStorage.getItem('theme')
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-
-        if (savedTheme) {
-            setTheme(savedTheme)
-            document.documentElement.setAttribute('data-theme', savedTheme)
-        } else if (systemPrefersDark) {
-            setTheme('dark')
-            document.documentElement.setAttribute('data-theme', 'dark')
-        }
+        document.documentElement.classList.add('dark')
     }, [])
 
     const toggleTheme = () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light'
-        setTheme(newTheme)
-        document.documentElement.setAttribute('data-theme', newTheme)
-        localStorage.setItem('theme', newTheme)
+        const next = theme === 'dark' ? 'light' : 'dark'
+        setTheme(next)
+        document.documentElement.classList.toggle('dark')
     }
 
-    const web3Stack = [
-        { name: 'Wagmi', slug: 'wagmi' },
-        { name: 'WalletConnect', slug: 'walletconnect' },
-        { name: 'Web3.js', slug: 'web3dotjs' },
-        { name: 'Viem', url: 'https://viem.sh/icon-light.png' },
-        { name: 'RainbowKit', url: 'https://rainbowkit.com/rainbow.svg' },
-        { name: 'Ethereum', slug: 'ethereum' }
-    ]
-
-    const frontendStack = [
-        { name: 'Next.js', slug: 'nextdotjs' },
-        { name: 'React', slug: 'react' },
-        { name: 'Vite', slug: 'vite' },
-        { name: 'JavaScript', slug: 'javascript' },
-        { name: 'TypeScript', slug: 'typescript' },
-        { name: 'Angular', slug: 'angular' },
-        { name: 'React Query', slug: 'reactquery' },
-        { name: 'Tailwind', slug: 'tailwindcss' },
-        { name: 'Styled Components', slug: 'styledcomponents' },
-        { name: 'ShadcnUI', slug: 'shadcnui' },
-        { name: 'Radix UI', slug: 'radixui' },
-        { name: 'Framer Motion', slug: 'framer' }
-    ]
-
-    const mobileStack = [
-        { name: 'React Native', slug: 'react' },
-        { name: 'Flutter', slug: 'flutter' },
-        { name: 'Swift', slug: 'swift' },
-        { name: 'Expo', slug: 'expo' }
-    ]
-
-    const backendStack = [
-        { name: 'Node.js', slug: 'nodedotjs' },
-        { name: 'Python', slug: 'python' },
-        { name: 'Express', slug: 'express' }
-    ]
-
     return (
-        <main>
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-            <div className="bento-grid">
-                {/* Header Area */}
-                <div className="grid-item hero-span">
-                    <Hero />
-                </div>
-
-                {/* Tech Stacks */}
-                {/* Tech Stacks */}
-                <div className="grid-item hero-span" style={{
-                    textAlign: 'center',
-                    gap: '0.5rem',
-                    // alignItems: 'center', // Removed to allow full width
-                    maxWidth: '600px', // Fixed narrow width
-                    margin: '0 auto', // Center in grid
-                    width: '100%'
-                }}>
-                    <TechSection title="FRONTEND" badges={frontendStack} />
-                    <TechSection title="BLOCKCHAIN" badges={web3Stack} />
-                    <TechSection title="MOBILE" badges={mobileStack} />
-                    <TechSection title="BACKEND" badges={backendStack} />
-                </div>
-
-                {/* Footer Area */}
-                <div className="grid-item footer-span">
-                    <SocialLinks />
-                    <footer>
-                        <p>© {new Date().getFullYear()} LUIS CASTILLO.</p>
-                    </footer>
+        <main className="game-container">
+            <div className="game-wrapper">
+                <TabNav
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                    theme={theme}
+                    onToggleTheme={toggleTheme}
+                />
+                <div className="mc-panel game-panel">
+                    <AnimatePresence mode="wait">
+                        {activeTab === 'Character' && <CharacterTab key="c" onTabChange={setActiveTab} />}
+                        {activeTab === 'Skills' && <SkillsTab key="s" />}
+                        {activeTab === 'Quests' && <QuestsTab key="q" />}
+                        {activeTab === 'Stats' && <StatsTab key="st" />}
+                    </AnimatePresence>
                 </div>
             </div>
         </main>
