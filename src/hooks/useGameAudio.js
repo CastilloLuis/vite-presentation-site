@@ -8,7 +8,6 @@ export default function useGameAudio() {
   const ambientRef = useRef(null)
   const startedRef = useRef(false)
 
-  // Lazy-init AudioContext (must be triggered by user gesture)
   const getCtx = useCallback(() => {
     if (!ctxRef.current) {
       ctxRef.current = new (window.AudioContext || window.webkitAudioContext)()
@@ -19,91 +18,85 @@ export default function useGameAudio() {
     return ctxRef.current
   }, [])
 
-  // --- Engine sound: low rumble that pitches up with speed ---
+  // --- Engine: gentle sine-based hum with smooth transitions ---
   const startEngine = useCallback(() => {
     if (engineRef.current) return
     const ctx = getCtx()
 
-    // Two detuned oscillators for richer sound
-    const osc1 = ctx.createOscillator()
-    const osc2 = ctx.createOscillator()
-    osc1.type = 'sawtooth'
-    osc2.type = 'square'
-    osc1.frequency.value = 55
-    osc2.frequency.value = 55
-    osc2.detune.value = 7
+    // Single sine oscillator — soft and pleasant
+    const osc = ctx.createOscillator()
+    osc.type = 'sine'
+    osc.frequency.value = 50
 
-    // Lowpass filter for warmth
+    // Very aggressive lowpass to keep it warm
     const filter = ctx.createBiquadFilter()
     filter.type = 'lowpass'
-    filter.frequency.value = 120
-    filter.Q.value = 2
+    filter.frequency.value = 80
+    filter.Q.value = 0.5
 
-    // Gain node (starts silent)
     const gain = ctx.createGain()
     gain.gain.value = 0
 
-    osc1.connect(filter)
-    osc2.connect(filter)
+    osc.connect(filter)
     filter.connect(gain)
     gain.connect(ctx.destination)
+    osc.start()
 
-    osc1.start()
-    osc2.start()
-
-    engineRef.current = { osc1, osc2, filter, gain }
+    engineRef.current = { osc, filter, gain }
   }, [getCtx])
 
   const updateEngine = useCallback((speed) => {
     if (!engineRef.current) return
-    const { osc1, osc2, filter, gain } = engineRef.current
-    // speed 0-15 mapped to frequency and volume
-    const t = Math.min(speed / 15, 1)
-    const freq = 45 + t * 60 // 45-105 Hz
-    const vol = 0.015 + t * 0.04 // very subtle: 0.015 - 0.055
-    const filterFreq = 100 + t * 200
+    const ctx = ctxRef.current
+    if (!ctx) return
 
-    osc1.frequency.value = freq
-    osc2.frequency.value = freq
-    filter.frequency.value = filterFreq
-    gain.gain.value = vol
+    const { osc, filter, gain } = engineRef.current
+    const now = ctx.currentTime
+
+    // Smooth ramp — prevents clicking/popping
+    const t = Math.min(speed / 15, 1)
+    const freq = 40 + t * 30        // 40-70 Hz — very subtle range
+    const vol = t * 0.02             // 0 to 0.02 — barely audible
+    const filterFreq = 60 + t * 80   // 60-140 Hz
+
+    osc.frequency.linearRampToValueAtTime(freq, now + 0.1)
+    filter.frequency.linearRampToValueAtTime(filterFreq, now + 0.1)
+    gain.gain.linearRampToValueAtTime(vol, now + 0.1)
   }, [])
 
   const stopEngine = useCallback(() => {
     if (!engineRef.current) return
-    const { osc1, osc2, gain } = engineRef.current
+    const { osc, gain } = engineRef.current
     gain.gain.value = 0
-    osc1.stop()
-    osc2.stop()
+    osc.stop()
     engineRef.current = null
   }, [])
 
-  // --- Interaction chime: short two-tone "boop" ---
+  // --- Interaction chime: soft two-tone boop ---
   const playInteract = useCallback(() => {
     const ctx = getCtx()
     const now = ctx.currentTime
 
     const osc = ctx.createOscillator()
     osc.type = 'sine'
-    osc.frequency.setValueAtTime(520, now)
-    osc.frequency.setValueAtTime(780, now + 0.08)
+    osc.frequency.setValueAtTime(440, now)
+    osc.frequency.exponentialRampToValueAtTime(660, now + 0.08)
 
     const gain = ctx.createGain()
-    gain.gain.setValueAtTime(0.12, now)
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25)
+    gain.gain.setValueAtTime(0.08, now)
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2)
 
     osc.connect(gain)
     gain.connect(ctx.destination)
     osc.start(now)
-    osc.stop(now + 0.25)
+    osc.stop(now + 0.2)
   }, [getCtx])
 
-  // --- Ambient background: quiet filtered noise pad ---
+  // --- Ambient: very quiet filtered noise ---
   const startAmbient = useCallback(() => {
     if (ambientRef.current) return
     const ctx = getCtx()
 
-    // Generate noise buffer
     const bufferSize = ctx.sampleRate * 4
     const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
     const data = buffer.getChannelData(0)
@@ -115,18 +108,17 @@ export default function useGameAudio() {
     noise.buffer = buffer
     noise.loop = true
 
-    // Very aggressive filtering for a soft pad
     const lp = ctx.createBiquadFilter()
     lp.type = 'lowpass'
-    lp.frequency.value = 200
-    lp.Q.value = 0.5
+    lp.frequency.value = 150
+    lp.Q.value = 0.3
 
     const hp = ctx.createBiquadFilter()
     hp.type = 'highpass'
-    hp.frequency.value = 60
+    hp.frequency.value = 50
 
     const gain = ctx.createGain()
-    gain.gain.value = 0.012 // very subtle
+    gain.gain.value = 0.008
 
     noise.connect(lp)
     lp.connect(hp)
@@ -134,19 +126,7 @@ export default function useGameAudio() {
     gain.connect(ctx.destination)
     noise.start()
 
-    // Quiet wind-like oscillator layer
-    const wind = ctx.createOscillator()
-    wind.type = 'sine'
-    wind.frequency.value = 85
-
-    const windGain = ctx.createGain()
-    windGain.gain.value = 0.008
-
-    wind.connect(windGain)
-    windGain.connect(ctx.destination)
-    wind.start()
-
-    ambientRef.current = { noise, wind, gain, windGain }
+    ambientRef.current = { noise, gain }
   }, [getCtx])
 
   // Auto-start on first user interaction
@@ -169,14 +149,11 @@ export default function useGameAudio() {
     }
   }, [ensureStarted])
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       stopEngine()
       if (ambientRef.current) {
-        const { noise, wind } = ambientRef.current
-        noise.stop()
-        wind.stop()
+        ambientRef.current.noise.stop()
         ambientRef.current = null
       }
       if (ctxRef.current) {

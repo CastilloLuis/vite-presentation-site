@@ -22,9 +22,9 @@ export default function AboutModal() {
 
       <div className="modal-about-bio">
         <p>
-          Dedicated Senior Software Engineer with 8+ years specializing in frontend development,
+          Dedicated Senior Software Engineer with 8+ years specializing in product development,
           design systems, and architecture. I build scalable applications with React, TypeScript,
-          and modern web technologies.
+          and modern web technologies. AI? AI is my copilot. I'm the driver.
         </p>
       </div>
 

@@ -2,16 +2,21 @@ import { useFrame } from '@react-three/fiber'
 import { useRef, useEffect } from 'react'
 import * as THREE from 'three'
 
-const DRIVE_SPEED = 15
-const REVERSE_SPEED = 8
-const TURN_SPEED = 3
-const STATIONARY_TURN_SPEED = 2.5
+export const VEHICLE_STATS = {
+  car: { drive: 15, reverse: 8, turn: 3, stationaryTurn: 2.5, damping: 0.92 },
+  cat: { drive: 13, reverse: 6, turn: 4, stationaryTurn: 3.5, damping: 0.85 },
+}
 
-export default function useVehicleControls(bodyRef, keysRef, frozen) {
+export default function useVehicleControls(bodyRef, keysRef, frozen, vehicleType = 'car') {
   const frozenRef = useRef(frozen)
   useEffect(() => {
     frozenRef.current = frozen
   }, [frozen])
+
+  const typeRef = useRef(vehicleType)
+  useEffect(() => {
+    typeRef.current = vehicleType
+  }, [vehicleType])
 
   const _quat = useRef(new THREE.Quaternion())
   const _forward = useRef(new THREE.Vector3())
@@ -22,6 +27,8 @@ export default function useVehicleControls(bodyRef, keysRef, frozen) {
 
     const keys = keysRef.current
     if (!keys || typeof keys.has !== 'function') return
+
+    const stats = VEHICLE_STATS[typeRef.current] || VEHICLE_STATS.car
 
     const up = keys.has('arrowup') || keys.has('w')
     const down = keys.has('arrowdown') || keys.has('s')
@@ -37,28 +44,28 @@ export default function useVehicleControls(bodyRef, keysRef, frozen) {
     // Movement
     if (up) {
       body.setLinvel({
-        x: _forward.current.x * DRIVE_SPEED,
+        x: _forward.current.x * stats.drive,
         y: linvel.y,
-        z: _forward.current.z * DRIVE_SPEED,
+        z: _forward.current.z * stats.drive,
       }, true)
     } else if (down) {
       body.setLinvel({
-        x: -_forward.current.x * REVERSE_SPEED,
+        x: -_forward.current.x * stats.reverse,
         y: linvel.y,
-        z: -_forward.current.z * REVERSE_SPEED,
+        z: -_forward.current.z * stats.reverse,
       }, true)
     } else {
       body.setLinvel({
-        x: linvel.x * 0.92,
+        x: linvel.x * stats.damping,
         y: linvel.y,
-        z: linvel.z * 0.92,
+        z: linvel.z * stats.damping,
       }, true)
     }
 
-    // Turning — works always, faster while driving
+    // Turning
     const turnDir = (left ? 1 : 0) - (right ? 1 : 0)
     if (turnDir !== 0) {
-      const speed = (up || down) ? TURN_SPEED : STATIONARY_TURN_SPEED
+      const speed = (up || down) ? stats.turn : stats.stationaryTurn
       body.setAngvel({ x: 0, y: turnDir * speed, z: 0 }, true)
     } else {
       const angvel = body.angvel()

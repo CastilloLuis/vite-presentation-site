@@ -6,6 +6,7 @@ import World3D from './three/World3D'
 import GameModal from './GameModal'
 import GameHUD from './GameHUD'
 import MobileControls from './MobileControls'
+import VehicleSelector from './VehicleSelector'
 
 function getActiveZone(px, pz) {
   for (const zone of ZONES_3D) {
@@ -23,6 +24,7 @@ function getActiveZone(px, pz) {
 export default function GameWorld({ onSwitchMode }) {
   const keys = useKeyboard()
   const { updateEngine, playInteract } = useGameAudio()
+  const [vehicleType, setVehicleType] = useState(null) // null = show selector
   const [activeZone, setActiveZone] = useState(null)
   const [modalType, setModalType] = useState(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -39,7 +41,7 @@ export default function GameWorld({ onSwitchMode }) {
     return () => window.removeEventListener('resize', check)
   }, [])
 
-  // Position update from Vehicle — also drives engine audio
+  // Position update from Vehicle — also drives engine audio + respawn check
   const handlePositionUpdate = useCallback((pos) => {
     setPlayerPos(pos)
     const zone = getActiveZone(pos.x, pos.z)
@@ -48,7 +50,7 @@ export default function GameWorld({ onSwitchMode }) {
     // Compute speed from position delta
     const dx = pos.x - prevPosRef.current.x
     const dz = pos.z - prevPosRef.current.z
-    const speed = Math.sqrt(dx * dx + dz * dz) * 10 // scale up for audio
+    const speed = Math.sqrt(dx * dx + dz * dz) * 10
     prevPosRef.current = { x: pos.x, z: pos.z }
     updateEngine(speed)
   }, [updateEngine])
@@ -67,6 +69,11 @@ export default function GameWorld({ onSwitchMode }) {
 
   const closeModal = useCallback(() => setModalType(null), [])
 
+  // Show vehicle selector if not chosen yet
+  if (!vehicleType) {
+    return <VehicleSelector onSelect={setVehicleType} />
+  }
+
   return (
     <div className="game-viewport">
       <World3D
@@ -74,6 +81,7 @@ export default function GameWorld({ onSwitchMode }) {
         frozen={!!modalType}
         activeZoneId={activeZone && !modalType ? activeZone.id : null}
         onPositionUpdate={handlePositionUpdate}
+        vehicleType={vehicleType}
       />
 
       <GameHUD

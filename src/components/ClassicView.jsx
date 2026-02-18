@@ -15,8 +15,28 @@ function SkillIcon({ item }) {
   return <img src={src} alt={item.name} className="cv-icon" loading="lazy" draggable={false} />
 }
 
+function InventorySlot({ item }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <div
+      className="cv-inv-slot"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <SkillIcon item={item} />
+      {hovered && (
+        <div className="cv-inv-tooltip">
+          <span className="cv-inv-tooltip-name">{item.name}</span>
+          <span className="cv-inv-tooltip-level">{item.powerLevel}</span>
+          {item.flavor && <span className="cv-inv-tooltip-flavor">{item.flavor}</span>}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ---- About Tab ----
-function AboutTab() {
+function AboutTab({ onViewSkills }) {
   return (
     <motion.div className="cv-about" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <div className="cv-about-hero">
@@ -35,18 +55,19 @@ function AboutTab() {
       </div>
 
       <p className="cv-bio">
-        Dedicated Senior Software Engineer with 8+ years specializing in frontend development,
-        design systems, and architecture. I build scalable applications with React, TypeScript,
-        and modern web technologies.
+          Dedicated Senior Software Engineer with 8+ years specializing in product development,
+          design systems, and architecture. I build scalable applications with React, TypeScript,
+          and modern web technologies. AI? AI is my copilot. I'm the driver.
       </p>
 
       <div className="cv-inventory">
-        <h3 className="cv-section-title">Toolbelt</h3>
+        <div className="cv-section-header">
+          <h3 className="cv-section-title">Toolings</h3>
+          <button className="cv-view-all" onClick={onViewSkills}>View All</button>
+        </div>
         <div className="cv-inventory-grid">
           {inventoryItems.map((item) => (
-            <div key={item.name} className="cv-inv-slot" title={item.name}>
-              <SkillIcon item={item} />
-            </div>
+            <InventorySlot key={item.name} item={item} />
           ))}
         </div>
       </div>
@@ -227,14 +248,14 @@ export default function ClassicView({ onSwitchMode }) {
             ))}
           </div>
           <button className="cv-mode-toggle" onClick={onSwitchMode}>
-            Explore World
+            EXPLORE THE WORLD
           </button>
         </div>
 
         {/* Content */}
         <div className="cv-panel">
           <AnimatePresence mode="wait">
-            {activeTab === 'About' && <AboutTab key="about" />}
+            {activeTab === 'About' && <AboutTab key="about" onViewSkills={() => setActiveTab('Skills')} />}
             {activeTab === 'Skills' && <SkillsTab key="skills" />}
             {activeTab === 'Stats' && <StatsTab key="stats" />}
           </AnimatePresence>

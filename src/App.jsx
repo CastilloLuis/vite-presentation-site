@@ -37,8 +37,8 @@ function LoadingScreen({ onDone }) {
 }
 
 function App() {
-  const [loaded, setLoaded] = useState(false)
-  const [viewMode, setViewMode] = useState('game')
+  const [loaded, setLoaded] = useState(true)
+  const [viewMode, setViewMode] = useState('classic')
 
   useEffect(() => {
     document.documentElement.classList.add('dark')
