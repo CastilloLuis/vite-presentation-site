@@ -66,6 +66,8 @@ export const skillCategories = [
             { name: 'Radix UI', slug: 'radixui', rank: 'Expert' },
             { name: 'Framer Motion', slug: 'framer', rank: 'Expert' },
             { name: 'Storybook', slug: 'storybook', rank: 'Expert' },
+            { name: 'Tailwind CSS', slug: 'tailwindcss', rank: 'Expert' },
+            { name: 'Styled Comp.', slug: 'styledcomponents', rank: 'Expert' },
         ],
     },
     {
@@ -74,8 +76,6 @@ export const skillCategories = [
         color: '#F472B6',
         skills: [
             { name: 'Node.js', slug: 'nodedotjs', rank: 'Expert' },
-            { name: 'Tailwind CSS', slug: 'tailwindcss', rank: 'Expert' },
-            { name: 'Styled Comp.', slug: 'styledcomponents', rank: 'Expert' },
             { name: 'Python', slug: 'python', rank: 'Familiar' },
             { name: 'SQL', slug: 'postgresql', rank: 'Familiar' },
             { name: 'Supabase', slug: 'supabase', rank: 'Familiar' },
