@@ -23,10 +23,9 @@ export function WelcomeBanner() {
                     Luis Castillo — Senior Software Engineer · 8+ years · Frontend, Design Systems, Web3
                 </div>
                 <div className="term-welcome-bio">
-                    8+ years building software — leading frontend teams, taking products from scratch to prod, and
-                    shipping design systems that scale. Crypto-native along the way: dApps, small Web3 teams, and
-                    systems where a bad deploy is a very public problem. Stack lives around Go, Node/TypeScript,
-                    Postgres/Redis, and React/Next on the frontend.
+                    8+ years building software — leading app teams, taking products from scratch to prod, and
+                    shipping design systems that scale. Crypto-native along the way. Stack lives around Go,
+                    Node/TypeScript, Postgres/Redis, and React/Next on the frontend.
                 </div>
                 <div className="term-welcome-hint">
                     Type <span className="term-kbd">/</span> to browse commands, or try{' '}
@@ -107,8 +106,8 @@ export const commands = {
                 <p className="term-p">
                     I take ownership of projects, lead frontend teams, and drive technical initiatives from scratch
                     to production — design systems, architecture, release pipelines, the lot. 8+ years of software
-                    engineering; crypto-native along the way: shipping dApps, leading small Web3 teams, and running
-                    systems where a bad deploy is a very public problem.
+                    engineering, leading app teams and shipping real products into the hands of real users.
+                    Crypto-native along the way.
                 </p>
                 <p className="term-p term-quote">
                     <span className="term-accent">AI? AI gives speed.</span> I give direction.

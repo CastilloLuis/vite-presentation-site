@@ -24,10 +24,9 @@ export default function Notes() {
                 </blockquote>
 
                 <p>
-                    Senior Software Engineer. 8+ years of software engineering — leading
-                    frontend teams, taking products from scratch to production, and shipping design systems that
-                    scale. Crypto-native along the way: dApps, small Web3 teams, and systems where a bad deploy is
-                    a very public problem.
+                    Senior Software Engineer. 8+ years of software engineering — leading app teams, taking
+                    products from scratch to production, and shipping design systems that scale. Crypto-native
+                    along the way.
                 </p>
 
                 <p>
