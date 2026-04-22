@@ -50,6 +50,17 @@ export const INVENTORY_COLS = 9
 // ---- SKILLS: Grouped by discipline ----
 export const skillCategories = [
     {
+        key: 'ai',
+        label: 'AI-Powered Dev',
+        color: '#D4A27F',
+        skills: [
+            { name: 'Claude Code', slug: 'anthropic', rank: 'Expert' },
+            { name: 'Cursor', slug: 'cursor', rank: 'Expert' },
+            { name: 'Codex', url: 'https://icons.getbootstrap.com/assets/icons/openai.svg', rank: 'Adept' },
+            { name: 'Vercel AI', slug: 'vercel', rank: 'Familiar' },
+        ],
+    },
+    {
         key: 'frontend',
         label: 'Frontend Architecture',
         color: '#61DAFB',
@@ -62,6 +73,8 @@ export const skillCategories = [
             { name: 'Vue', slug: 'vuedotjs', rank: 'Adept' },
             { name: 'React Query', slug: 'reactquery', rank: 'Expert' },
             { name: 'GraphQL', slug: 'graphql', rank: 'Expert' },
+            { name: 'Tailwind CSS', slug: 'tailwindcss', rank: 'Expert' },
+            { name: 'Styled Comp.', slug: 'styledcomponents', rank: 'Expert' },
             { name: 'shadcn/ui', slug: 'shadcnui', rank: 'Expert' },
             { name: 'Radix UI', slug: 'radixui', rank: 'Expert' },
             { name: 'Framer Motion', slug: 'framer', rank: 'Expert' },
@@ -74,8 +87,7 @@ export const skillCategories = [
         color: '#F472B6',
         skills: [
             { name: 'Node.js', slug: 'nodedotjs', rank: 'Expert' },
-            { name: 'Tailwind CSS', slug: 'tailwindcss', rank: 'Expert' },
-            { name: 'Styled Comp.', slug: 'styledcomponents', rank: 'Expert' },
+            { name: 'Go', slug: 'go', rank: 'Familiar' },
             { name: 'Python', slug: 'python', rank: 'Familiar' },
             { name: 'SQL', slug: 'postgresql', rank: 'Familiar' },
             { name: 'Supabase', slug: 'supabase', rank: 'Familiar' },
@@ -105,19 +117,6 @@ export const skillCategories = [
             { name: 'WalletConnect', slug: 'walletconnect', rank: 'Expert' },
             { name: 'RainbowKit', url: 'https://rainbowkit.com/rainbow.svg', rank: 'Expert' },
             { name: 'Solidity Integrations', slug: 'solidity', rank: 'Familiar' },
-        ],
-    },
-    {
-        key: 'ai',
-        label: 'AI-Powered Dev',
-        color: '#D4A27F',
-        skills: [
-            { name: 'Claude Code', slug: 'anthropic', rank: 'Expert' },
-            { name: 'Cursor', slug: 'cursor', rank: 'Expert' },
-            { name: 'Codex', url: 'https://icons.getbootstrap.com/assets/icons/openai.svg', rank: 'Adept' },
-            // { name: 'Copilot', slug: 'githubcopilot', rank: 'Adept' },
-            { name: 'Vercel AI', slug: 'vercel', rank: 'Familiar' },
-            // { name: 'Hugging Face', slug: 'huggingface', rank: 'Familiar' },
         ],
     },
 ]
@@ -175,6 +174,28 @@ export const allQuests = [
         status: 'in-progress',
         color: '#3B82F6',
         description: 'Contributing to dOrg DAO governance and engineering. Built core frontend for Concrete Protocol\'s DeFi app — automated yield vaults and cross-chain borrowing with modern Web3 tooling.',
+    },
+]
+
+// ---- PERSONAL PROJECTS ----
+export const personalProjects = [
+    {
+        name: 'ShapeIt',
+        domain: 'shapeit.kasti.dev',
+        url: 'https://shapeit.kasti.dev',
+        tagline: 'A playground for shapes & visual tinkering.',
+    },
+    {
+        name: 'Easy Wishlist',
+        domain: 'easywishlist.site',
+        url: 'https://easywishlist.site',
+        tagline: 'Wishlists made simple — share, gift, done.',
+    },
+    {
+        name: 'MyFitnessPaw',
+        domain: 'myfitnesspaw.app',
+        url: 'https://myfitnesspaw.app',
+        tagline: 'Fitness tracking with a little personality.',
     },
 ]
 
