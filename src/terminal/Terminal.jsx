@@ -224,7 +224,10 @@ export default function Terminal() {
                         autoCapitalize="off"
                         autoComplete="off"
                         placeholder="type / for commands"
-                        autoFocus
+                        autoFocus={
+                            typeof window !== 'undefined' &&
+                            !window.matchMedia('(max-width: 780px)').matches
+                        }
                     />
                 </div>
             </div>
