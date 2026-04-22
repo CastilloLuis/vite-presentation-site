@@ -121,61 +121,6 @@ export const skillCategories = [
     },
 ]
 
-// ---- QUESTS: Real roles & projects (sidebar preview) ----
-export const quests = [
-    { name: 'Gelato Network', progress: 90, status: 'in-progress', color: '#EAB308' },
-    { name: 'Spectral Labs', progress: 100, status: 'completed', color: '#22C55E' },
-    { name: 'Rappi Super App', progress: 100, status: 'completed', color: '#22C55E' },
-]
-
-// ---- QUESTS TAB: Full quest log ----
-export const allQuests = [
-    {
-        name: 'Gelato Network',
-        role: 'Tech Lead — Senior Frontend Engineer',
-        period: '2023 – Present',
-        progress: 90,
-        status: 'in-progress',
-        color: '#EAB308',
-        description: 'Leading frontend architecture for Relay, VRF, OneBalance, Functions, Oracles, RaaS, and Account Abstraction. Owning the full lifecycle from design system to deployment across decentralized infrastructure products.',
-    },
-    {
-        name: 'Spectral Labs',
-        role: 'Senior Software Engineer',
-        period: '2021 – 2023',
-        progress: 100,
-        status: 'completed',
-        color: '#22C55E',
-        description: 'Built the frontend from on-chain credit scoring through AI-driven agent orchestration. Shipped real-time dashboards, modular architecture with React/TypeScript/Tailwind, and deep protocol integrations.',
-    },
-    {
-        name: 'Rappi',
-        role: 'Senior Frontend Engineer',
-        period: '2019 – 2021',
-        progress: 100,
-        status: 'completed',
-        color: '#22C55E',
-        description: 'Scaled frontend for Latin America\'s first super app — 8M+ MAU across 9 countries. Built MiTienda (commerce platform for SMBs) and the Partners integration suite from scratch.',
-    },
-    {
-        name: 'CodeCharm',
-        role: 'Software Engineer',
-        period: '2018 – 2019',
-        progress: 100,
-        status: 'completed',
-        color: '#22C55E',
-        description: 'Built Code2Flow (natural language → flowcharts) and Magma Studio (real-time collaborative art) using Angular, RxJS, NgRx, and NestJS. First deep dive into reactive architecture.',
-    },
-    {
-        name: 'dOrg & Concrete',
-        role: 'DAO Member & Engineer',
-        period: 'Ongoing',
-        progress: 75,
-        status: 'in-progress',
-        color: '#3B82F6',
-        description: 'Contributing to dOrg DAO governance and engineering. Built core frontend for Concrete Protocol\'s DeFi app — automated yield vaults and cross-chain borrowing with modern Web3 tooling.',
-    },
-]
 
 // ---- PERSONAL PROJECTS ----
 export const personalProjects = [
