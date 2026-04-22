@@ -32,7 +32,7 @@ export default function BootScreen({ onDone }) {
                         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                     >
                         <span className="boot-logo-mark">LC</span>
-                        <span className="boot-logo-caption">luisOS</span>
+                        <span className="boot-logo-caption">kastiOS</span>
                     </motion.div>
 
                     <motion.div

@@ -15,7 +15,7 @@ export function WelcomeBanner() {
             <pre className="term-ascii">{BOOT_BANNER}</pre>
             <div className="term-welcome-body">
                 <div>
-                    <span className="term-dim">guest@luisOS</span>
+                    <span className="term-dim">guest@kastiOS</span>
                     <span className="term-dim"> · </span>
                     <span>portfolio v4.0</span>
                 </div>

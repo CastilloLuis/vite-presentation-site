@@ -50,7 +50,7 @@ function Intro() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-            <div className="home-intro-eyebrow">luisOS · portfolio</div>
+            <div className="home-intro-eyebrow">kastiOS · portfolio</div>
             <h1 className="home-intro-name">Luis Castillo</h1>
             <div className="home-intro-role">Senior Software Engineer · 8+ years</div>
             <p className="home-intro-bio">
