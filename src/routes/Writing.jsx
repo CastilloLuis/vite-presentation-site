@@ -1,6 +1,6 @@
 import React from 'react'
 import { ChevronRight } from 'lucide-react'
-import TransitionLink from '@/components/TransitionLink'
+import { Link } from 'react-router'
 import { posts } from 'virtual:posts'
 import CardPage from '@/routes/CardPage'
 import { formatDay } from '@/lib/date'
@@ -21,7 +21,7 @@ export default function Writing() {
                 <ul className="post-list">
                     {posts.map((p) => (
                         <li key={p.slug}>
-                            <TransitionLink to={`/writing/${p.slug}`} className="post-link">
+                            <Link to={`/writing/${p.slug}`} className="post-link">
                                 <span className="post-link__title t-head">
                                     {p.title}
                                     <ChevronRight className="row-chev" aria-hidden />
@@ -34,7 +34,7 @@ export default function Writing() {
                                     <span aria-hidden> · </span>
                                     {p.minutes} min read
                                 </span>
-                            </TransitionLink>
+                            </Link>
                         </li>
                     ))}
                 </ul>

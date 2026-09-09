@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { PANELS, photoHandle, photoNote, photos, stack } from '@/data/site'
 import useMediaQuery, { NARROW } from '@/lib/useMediaQuery'
 import { ChevronRight } from 'lucide-react'
-import TransitionLink from '@/components/TransitionLink'
+import { Link } from 'react-router'
 import { posts } from 'virtual:posts'
 import { formatDay } from '@/lib/date'
 import { play } from '@/lib/sound'
@@ -124,7 +124,7 @@ function Writing() {
             <ul className="panel-writing__list">
                 {recent.map((p) => (
                     <li key={p.slug}>
-                        <TransitionLink
+                        <Link
                             to={`/writing/${p.slug}`}
                             className="panel-post"
                             onPointerEnter={() => play('hover')}
@@ -143,7 +143,7 @@ function Writing() {
                             {p.description && (
                                 <span className="panel-post__blurb t-meta">{p.description}</span>
                             )}
-                        </TransitionLink>
+                        </Link>
                     </li>
                 ))}
             </ul>

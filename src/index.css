@@ -2045,49 +2045,36 @@ li.chip:hover .mark,
     transform: translateX(0);
 }
 
-/* ============ MOVING BETWEEN PAGES ============
-   The card is named, so the browser tracks it across the navigation and
-   morphs the front page's card into the one the writing sits in rather than
-   cross-fading two unrelated rectangles. Everything else fades and settles.
-
-   Browsers without view transitions simply navigate, which is the same thing
-   without the animation — nothing here is load-bearing. */
-.sky-card {
-    view-transition-name: card;
+/* ---- arriving on a page of writing ---- */
+/* The same idea as the tab slots: fade, and settle a few pixels. A plain CSS
+   animation, so it runs on a cold load of the prerendered HTML as well as on
+   a click, and needs nothing to have booted first. */
+@keyframes read-in {
+    from {
+        opacity: 0;
+        transform: translateY(7px);
+    }
 }
 
-::view-transition-old(root) {
-    animation: page-out 0.2s var(--ease-out-soft) both;
+.read__card {
+    animation: read-in 0.34s var(--ease-out-soft) both;
 }
 
-::view-transition-new(root) {
-    animation: page-in 0.34s var(--ease-out-soft) both;
-}
-
-::view-transition-old(card),
-::view-transition-new(card) {
-    /* The card's own morph carries the movement; its contents should not
-       also slide, or the two animations fight. */
-    animation-duration: 0.42s;
-    animation-timing-function: var(--ease-out-soft);
-}
-
-@keyframes page-out {
-    to { opacity: 0; }
-}
-
-@keyframes page-in {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Staggered a touch behind the card, so the card lands and the words follow
+   rather than the whole thing sliding as one block. */
+.read__head,
+.read__card .prose,
+.read__card .post-list {
+    animation: read-in 0.42s var(--ease-out-soft) 0.06s both;
 }
 
 @media (prefers-reduced-motion: reduce) {
     .row-chev { transition: none; }
 
-    ::view-transition-old(root),
-    ::view-transition-new(root),
-    ::view-transition-old(card),
-    ::view-transition-new(card) {
+    .read__card,
+    .read__head,
+    .read__card .prose,
+    .read__card .post-list {
         animation: none;
     }
 }

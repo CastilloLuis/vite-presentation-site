@@ -1,5 +1,5 @@
 import React from 'react'
-import TransitionLink from '@/components/TransitionLink'
+import { Link } from 'react-router'
 import { SkyProvider, SEED_HOUR } from '@/components/SkyProvider'
 import ClickFX from '@/components/ClickFX'
 import { profile } from '@/data/site'
@@ -17,8 +17,8 @@ export default function CardPage({ back, children }) {
             <div className="card-inset read">
                 <article className="sky-card read__card">
                     <nav className="read__top">
-                        <TransitionLink to={back.to} className="prose-back">{back.label}</TransitionLink>
-                        <TransitionLink to="/" className="read__name t-meta">{profile.name}</TransitionLink>
+                        <Link to={back.to} className="prose-back">{back.label}</Link>
+                        <Link to="/" className="read__name t-meta">{profile.name}</Link>
                     </nav>
                     {children}
                 </article>
