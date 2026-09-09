@@ -1928,7 +1928,7 @@ li.chip:hover .mark,
 }
 
 /* ---- the writing, in the panel ---- */
-.panel-blog {
+.panel-writing {
     display: flex;
     height: 100%;
     flex-direction: column;
@@ -1937,7 +1937,7 @@ li.chip:hover .mark,
     padding-top: 4px;
 }
 
-.panel-blog__list {
+.panel-writing__list {
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
@@ -1993,18 +1993,18 @@ li.chip:hover .mark,
     font-variant-numeric: tabular-nums;
 }
 
-.panel-blog__more {
+.panel-writing__more {
     align-self: flex-start;
     color: var(--ink-faint);
     text-decoration: none;
     transition: color 0.2s var(--ease-out-soft);
 }
 
-.panel-blog__more::after {
+.panel-writing__more::after {
     content: ' →';
 }
 
-.panel-blog__more:hover {
+.panel-writing__more:hover {
     color: var(--ink);
 }
 
@@ -2019,5 +2019,75 @@ li.chip:hover .mark,
     .panel-post__title {
         overflow: visible;
         white-space: normal;
+    }
+}
+
+/* ---- the chevron that says a row opens ---- */
+.row-chev {
+    display: inline-block;
+    width: 0.95em;
+    height: 0.95em;
+    margin-left: 0.28em;
+    vertical-align: -0.13em;
+    color: var(--ink-faint);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+        opacity 0.2s var(--ease-out-soft),
+        transform 0.25s var(--ease-out-soft);
+}
+
+.panel-post:hover .row-chev,
+.panel-post:focus-visible .row-chev,
+.post-link:hover .row-chev,
+.post-link:focus-visible .row-chev {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ============ MOVING BETWEEN PAGES ============
+   The card is named, so the browser tracks it across the navigation and
+   morphs the front page's card into the one the writing sits in rather than
+   cross-fading two unrelated rectangles. Everything else fades and settles.
+
+   Browsers without view transitions simply navigate, which is the same thing
+   without the animation — nothing here is load-bearing. */
+.sky-card {
+    view-transition-name: card;
+}
+
+::view-transition-old(root) {
+    animation: page-out 0.2s var(--ease-out-soft) both;
+}
+
+::view-transition-new(root) {
+    animation: page-in 0.34s var(--ease-out-soft) both;
+}
+
+::view-transition-old(card),
+::view-transition-new(card) {
+    /* The card's own morph carries the movement; its contents should not
+       also slide, or the two animations fight. */
+    animation-duration: 0.42s;
+    animation-timing-function: var(--ease-out-soft);
+}
+
+@keyframes page-out {
+    to { opacity: 0; }
+}
+
+@keyframes page-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .row-chev { transition: none; }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root),
+    ::view-transition-old(card),
+    ::view-transition-new(card) {
+        animation: none;
     }
 }

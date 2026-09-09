@@ -12,7 +12,7 @@ export default function Post() {
     if (!post) return <NotFound />
 
     return (
-        <CardPage back={{ to: '/blog', label: 'Back' }}>
+        <CardPage back={{ to: '/writing', label: 'Back' }}>
             <header className="read__head">
                 <h1 className="t-hero text-ink">{post.title}</h1>
                 <p className="t-meta text-ink-faint">

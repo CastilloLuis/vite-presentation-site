@@ -31,7 +31,7 @@ export const profile = {
 }
 
 // ---- Panels ----
-export const PANELS = ['Stack', 'Blog', 'Photos']
+export const PANELS = ['Stack', 'Writing', 'Photos']
 
 // ---- Work ----
 export const work = [

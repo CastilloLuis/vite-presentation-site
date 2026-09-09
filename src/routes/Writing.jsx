@@ -1,10 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { ChevronRight } from 'lucide-react'
+import TransitionLink from '@/components/TransitionLink'
 import { posts } from 'virtual:posts'
 import CardPage from '@/routes/CardPage'
 import { formatDay } from '@/lib/date'
 
-export default function Blog() {
+export default function Writing() {
     return (
         <CardPage back={{ to: '/', label: 'Back' }}>
             <header className="read__head">
@@ -20,8 +21,11 @@ export default function Blog() {
                 <ul className="post-list">
                     {posts.map((p) => (
                         <li key={p.slug}>
-                            <Link to={`/blog/${p.slug}`} className="post-link">
-                                <span className="post-link__title t-head">{p.title}</span>
+                            <TransitionLink to={`/writing/${p.slug}`} className="post-link">
+                                <span className="post-link__title t-head">
+                                    {p.title}
+                                    <ChevronRight className="row-chev" aria-hidden />
+                                </span>
                                 {p.description && (
                                     <span className="post-link__blurb t-body">{p.description}</span>
                                 )}
@@ -30,7 +34,7 @@ export default function Blog() {
                                     <span aria-hidden> · </span>
                                     {p.minutes} min read
                                 </span>
-                            </Link>
+                            </TransitionLink>
                         </li>
                     ))}
                 </ul>

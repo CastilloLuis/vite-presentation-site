@@ -10,7 +10,8 @@ import {
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { PANELS, photoHandle, photoNote, photos, stack } from '@/data/site'
 import useMediaQuery, { NARROW } from '@/lib/useMediaQuery'
-import { Link } from 'react-router'
+import { ChevronRight } from 'lucide-react'
+import TransitionLink from '@/components/TransitionLink'
 import { posts } from 'virtual:posts'
 import { formatDay } from '@/lib/date'
 import { play } from '@/lib/sound'
@@ -99,7 +100,7 @@ function Stack() {
     )
 }
 
-/* ---------- Blog ---------- */
+/* ---------- Writing ---------- */
 /**
  * The three most recent, and a way through to the rest. The posts themselves
  * are separate pages rather than a panel: they are the one thing on this site
@@ -107,29 +108,32 @@ function Stack() {
  */
 const RECENT = 3
 
-function Blog() {
+function Writing() {
     const recent = posts.slice(0, RECENT)
 
     if (recent.length === 0) {
         return (
-            <div className="panel-blog">
+            <div className="panel-writing">
                 <p className="t-body text-ink-faint">Nothing published yet.</p>
             </div>
         )
     }
 
     return (
-        <div className="panel-blog">
-            <ul className="panel-blog__list">
+        <div className="panel-writing">
+            <ul className="panel-writing__list">
                 {recent.map((p) => (
                     <li key={p.slug}>
-                        <Link
-                            to={`/blog/${p.slug}`}
+                        <TransitionLink
+                            to={`/writing/${p.slug}`}
                             className="panel-post"
                             onPointerEnter={() => play('hover')}
                         >
                             <span className="panel-post__head">
-                                <span className="panel-post__title t-body">{p.title}</span>
+                                <span className="panel-post__title t-body">
+                                    {p.title}
+                                    <ChevronRight className="row-chev" aria-hidden />
+                                </span>
                                 <span className="panel-post__meta t-meta">
                                     <time dateTime={p.date}>{formatDay(p.date)}</time>
                                     <span aria-hidden> · </span>
@@ -139,7 +143,7 @@ function Blog() {
                             {p.description && (
                                 <span className="panel-post__blurb t-meta">{p.description}</span>
                             )}
-                        </Link>
+                        </TransitionLink>
                     </li>
                 ))}
             </ul>
@@ -295,7 +299,7 @@ function Photos() {
     )
 }
 
-const VIEWS = { Stack, Blog, Photos }
+const VIEWS = { Stack, Writing, Photos }
 
 export default function Panels() {
     const [active, setActive] = useState(PANELS[0])

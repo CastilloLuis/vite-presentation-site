@@ -64,18 +64,18 @@ function jsonLd(post, url) {
 
 const pages = [
     {
-        url: '/blog',
+        url: '/writing',
         title: 'Writing — Luis Castillo',
         description: 'Notes on software engineering, product and AI.',
         type: 'website',
     },
     ...posts.map((p) => ({
-        url: `/blog/${p.slug}`,
+        url: `/writing/${p.slug}`,
         title: `${p.title} — Luis Castillo`,
         description: p.description || p.title,
         type: 'article',
         published: p.date,
-        ld: jsonLd(p, `${SITE}/blog/${p.slug}`),
+        ld: jsonLd(p, `${SITE}/writing/${p.slug}`),
     })),
 ]
 
@@ -97,6 +97,36 @@ for (const page of pages) {
     fs.mkdirSync(dir, { recursive: true })
     fs.writeFileSync(path.join(dir, 'index.html'), html)
     console.log(`  ${page.url}  ${(html.length / 1024).toFixed(1)} KB`)
+}
+
+/**
+ * The paths this lived at before the rename. A client-side <Navigate> only
+ * helps someone who already has the bundle running; these stubs move anyone
+ * who arrives cold — including a crawler, which is told plainly where the
+ * page went rather than being left to guess.
+ */
+for (const { from, to } of [
+    { from: '/blog', to: '/writing' },
+    ...posts.map((p) => ({ from: `/blog/${p.slug}`, to: `/writing/${p.slug}` })),
+]) {
+    const dir = path.join(dist, from)
+    fs.mkdirSync(dir, { recursive: true })
+    fs.writeFileSync(
+        path.join(dir, 'index.html'),
+        `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Moved</title>
+<link rel="canonical" href="${SITE}${to}" />
+<meta name="robots" content="noindex" />
+<meta http-equiv="refresh" content="0; url=${to}" />
+</head>
+<body><a href="${to}">This page moved to ${to}</a></body>
+</html>
+`
+    )
+    console.log(`  ${from} -> ${to}`)
 }
 
 // The server bundle is a build artefact, not something to deploy.

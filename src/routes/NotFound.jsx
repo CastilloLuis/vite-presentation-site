@@ -9,7 +9,7 @@ export default function NotFound() {
                 <h1 className="t-hero text-ink">Not here.</h1>
             </header>
             <p className="t-body text-ink-body">
-                That page does not exist. Try the <Link to="/blog" className="prose-a">writing</Link>,
+                That page does not exist. Try the <Link to="/writing" className="prose-a">writing</Link>,
                 or go <Link to="/" className="prose-a">back to the start</Link>.
             </p>
         </CardPage>
