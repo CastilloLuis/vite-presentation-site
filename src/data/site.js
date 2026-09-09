@@ -27,7 +27,7 @@ export const profile = {
 
     // Its own line, kept short so the app stack always stays beside the text
     // and has the rest of the line to fan open into.
-    apps: 'On my own time I build my own apps: {projects}',
+    apps: 'On my free time I like to build apps: {projects}',
 }
 
 // ---- Panels ----

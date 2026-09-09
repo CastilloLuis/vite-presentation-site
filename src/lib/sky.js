@@ -1,6 +1,6 @@
 // ============================================
 // Sky — the colour of the sky at a given hour.
-// Drives the footer gradient, stars, and sun/moon.
+// Drives the sky gradient, the stars and the clouds.
 // ============================================
 
 // Keyframes around a 24h clock. Colours are [r, g, b].
@@ -49,8 +49,10 @@ export function contrast(a, b) {
 }
 
 /**
- * The full sky state at `hour` (a float, 0–24).
- * Interpolates between keyframes and places the sun or moon on its arc.
+ * The full sky state at `hour` (a float, 0–24), interpolated between
+ * keyframes. `isDay` still drives the scrubber's icon and the ink choice,
+ * but nothing is drawn in the sky itself any more beyond the gradient, the
+ * stars and the clouds.
  */
 export function skyAt(hour) {
     const h = ((hour % 24) + 24) % 24
@@ -67,10 +69,6 @@ export function skyAt(hour) {
     const stars = lerp(a.stars, b.stars, t)
 
     const isDay = h >= SUNRISE && h <= SUNSET
-    // 0 at the horizon, 1 at the peak of the arc.
-    const arc = isDay
-        ? (h - SUNRISE) / (SUNSET - SUNRISE)
-        : ((h < SUNRISE ? h + 24 : h) - SUNSET) / (24 - SUNSET + SUNRISE)
 
     // Pick whichever ink actually reads on this sky, rather than trusting a
     // brightness threshold — sunrise and sunset sit right on the fence.
@@ -84,12 +82,6 @@ export function skyAt(hour) {
         bottom,
         stars,
         isDay,
-        body: {
-            // Left to right across the sky, arcing up and back down.
-            x: 0.12 + arc * 0.76,
-            y: 1 - Math.sin(arc * Math.PI) * 0.86,
-            glow: isDay ? [255, 232, 190] : [226, 232, 246],
-        },
         luminance: lum,
         onSky: ink,
         // True when the sky is light enough that it wants dark ink on it.

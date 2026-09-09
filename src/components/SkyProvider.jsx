@@ -164,33 +164,6 @@ export function SkyProvider({ children }) {
                 ctx.globalAlpha = 1
             }
 
-            // ---- sun / moon ----
-            const bx = s.body.x * w
-            const by = s.body.y * h * 0.82 + h * 0.04
-            const r = s.isDay ? 30 : 23
-            const glow = ctx.createRadialGradient(bx, by, 0, bx, by, r * 9)
-            glow.addColorStop(0, rgb(s.body.glow, s.isDay ? 0.75 : 0.4))
-            glow.addColorStop(0.25, rgb(s.body.glow, s.isDay ? 0.22 : 0.12))
-            glow.addColorStop(1, rgb(s.body.glow, 0))
-            ctx.fillStyle = glow
-            ctx.beginPath()
-            ctx.arc(bx, by, r * 9, 0, Math.PI * 2)
-            ctx.fill()
-
-            ctx.fillStyle = rgb(s.body.glow, s.isDay ? 0.95 : 0.88)
-            ctx.beginPath()
-            ctx.arc(bx, by, r, 0, Math.PI * 2)
-            ctx.fill()
-
-            if (!s.isDay) {
-                // Bite a crescent out of the moon.
-                ctx.globalCompositeOperation = 'destination-out'
-                ctx.beginPath()
-                ctx.arc(bx + r * 0.52, by - r * 0.3, r * 0.92, 0, Math.PI * 2)
-                ctx.fill()
-                ctx.globalCompositeOperation = 'source-over'
-            }
-
             // ---- clouds ----
             // Warm near the horizon, cool up high. Cheap, but convincing.
             for (const c of clouds) {

@@ -7,7 +7,6 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { motion } from 'framer-motion'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { PANELS, photoHandle, photoNote, photos, stack } from '@/data/site'
 import useMediaQuery, { NARROW } from '@/lib/useMediaQuery'
@@ -15,10 +14,8 @@ import { play } from '@/lib/sound'
 import { cn } from '@/lib/utils'
 
 /* ---------- Stack ---------- */
-// Tile is 2.1em; this is the per-step offset when open, in em. The closed
-// offset lives in the stylesheet alongside the transition.
-const TILE = 2.1
-const STEP_OPEN = 2.25
+/** -1 at the first tile, +1 at the last, 0 in the middle. */
+const spread = (i, n) => (n < 2 ? 0 : (i - (n - 1) / 2) / ((n - 1) / 2))
 
 /**
  * One row: a label and a pile of marks that fans open on hover.
@@ -30,7 +27,6 @@ const STEP_OPEN = 2.25
  */
 function StackRow({ row }) {
     const [active, setActive] = useState(-1)
-    const openWidth = TILE + (row.items.length - 1) * STEP_OPEN
 
     return (
         <div className="stack-row flex items-center gap-4">
@@ -38,9 +34,14 @@ function StackRow({ row }) {
                 {row.label}
             </span>
 
+            {/* The row reserves its open width so the panel never reflows when
+                the tiles fan. Only the count comes from here — how far they
+                spread is the stylesheet's call, and it has to be, because the
+                reserved width and the travel are the same number and would
+                drift apart if they were set in two places. */}
             <span
                 className="brandstack"
-                style={{ '--fan-w': `${openWidth}em` }}
+                style={{ '--n': row.items.length }}
                 onPointerLeave={() => setActive(-1)}
             >
                 {row.items.map((name, i) => (
@@ -50,6 +51,11 @@ function StackRow({ row }) {
                                 className="brandstack__chip"
                                 style={{
                                     '--i': i,
+                                    // Fanned like a deck: the tilt runs from
+                                    // one edge to the other whatever the row
+                                    // holds, so a row of nine leans no harder
+                                    // than a row of three.
+                                    '--r': `${spread(i, row.items.length) * 4}deg`,
                                     // The hovered chip has to come to the
                                     // front: its ring is drawn outside its
                                     // box, so a neighbour stacked above it
@@ -241,7 +247,6 @@ const VIEWS = { Stack, Photos }
 
 export default function Panels() {
     const [active, setActive] = useState(PANELS[0])
-    const View = VIEWS[active]
 
     // The rule under the tabs slides to whichever one is current. Measured
     // rather than guessed, because the labels are different widths and the
@@ -295,22 +300,27 @@ export default function Panels() {
                 />
             </nav>
 
-            <div className="panel-body hide-scrollbar min-h-0 overflow-y-auto">
-                {/* Keyed fade-in, no exit animation — a tab must swap the
-                    instant it is clicked, never wait on an outgoing one. */}
-                {/* Settles downward into place. The travel is negative on
-                    purpose: a positive offset pushes the content past the
-                    bottom of a panel that scrolls, which is what put a
-                    three-pixel scrollbar on the tab the first time round. */}
-                <motion.div
-                    key={active}
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    className="h-full"
-                >
-                    <View />
-                </motion.div>
+            {/* Both panels sit in the same grid cell, so the box is always
+                as tall as the taller of them. It cannot scroll, because it is
+                never smaller than its contents, and it cannot jump between
+                tabs, because its height no longer depends on which is showing.
+                The one on top fades and settles into place. */}
+            <div className="panel-body min-h-0">
+                {PANELS.map((name) => {
+                    const Panel = VIEWS[name]
+                    const on = name === active
+                    return (
+                        <div
+                            key={name}
+                            className="panel-slot"
+                            data-on={on}
+                            aria-hidden={!on}
+                            inert={!on}
+                        >
+                            <Panel />
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
