@@ -8,9 +8,11 @@ import {
 import { play } from '@/lib/sound'
 import { projects } from '@/data/site'
 
-// Tile is 1.72em; this is the per-step offset while closed, in em.
+// Tile is 1.72em; these are the per-step offsets, in em. Open leaves a
+// real gap between the tiles rather than butting them together, so the fan
+// reads as three separate apps and not one strip.
 const STEP_CLOSED = 0.86
-const STEP_OPEN = 1.98
+const STEP_OPEN = 2.45
 const TILE = 1.72
 
 /**
@@ -36,10 +38,16 @@ export default function AppStack() {
         <TooltipProvider delayDuration={80} disableHoverableContent>
             {/* Both widths are published: there is no hover on a touch
                 screen, so the stylesheet fans the stack open there and needs
-                the open width to reserve. */}
+                the open width to reserve. The travel goes out with them,
+                because the reserved width *is* the travel — set in two
+                places they drift apart and the sentence reflows. */}
             <span
                 className="app-stack"
-                style={{ '--stack-w': `${closedWidth}em`, '--stack-open-w': `${openWidth}em` }}
+                style={{
+                    '--stack-w': `${closedWidth}em`,
+                    '--stack-open-w': `${openWidth}em`,
+                    '--step-open': `${STEP_OPEN}em`,
+                }}
                 onPointerLeave={() => setActive(-1)}
             >
                 {projects.map((p, i) => (

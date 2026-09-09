@@ -361,14 +361,14 @@ li.chip:hover .mark,
 /* Fan open. */
 .app-stack:hover .app-stack__item,
 .app-stack:focus-within .app-stack__item {
-    transform: translateX(calc(var(--i) * 1.98em)) rotate(0deg);
+    transform: translateX(calc(var(--i) * var(--step-open))) rotate(0deg);
 }
 
 /* Lift the one under the cursor. Written at the same depth as the rule
    above so it is not outranked by it. */
 .app-stack:hover .app-stack__item:hover,
 .app-stack:focus-within .app-stack__item:focus-visible {
-    transform: translateX(calc(var(--i) * 1.98em)) translateY(-3px) scale(1.08);
+    transform: translateX(calc(var(--i) * var(--step-open))) translateY(-3px) scale(1.08);
 }
 
 .app-stack__item img {
@@ -382,7 +382,7 @@ li.chip:hover .mark,
     .app-stack__item,
     .app-stack:hover .app-stack__item {
         transition: none;
-        transform: translateX(calc(var(--i) * 1.98em));
+        transform: translateX(calc(var(--i) * var(--step-open)));
     }
 }
 
@@ -1591,7 +1591,7 @@ li.chip:hover .mark,
     }
 
     .app-stack {
-        --step: 1.98em;
+        --step: var(--step-open);
         --rot: 0deg;
     }
 
@@ -1649,5 +1649,86 @@ li.chip:hover .mark,
         .scrub--row .scrub__scale {
             width: 3rem;
         }
+    }
+}
+
+/* ============ GLYPH FIELD ============
+   The stack rows run out well before the right edge of the card — the longest
+   is nine tiles, the shortest four — and the band they leave behind was the
+   only dead space on the page. This fills it, from the tab rule to the foot
+   of the panel, with the punctuation of code: present enough to read as a
+   surface, quiet enough that nobody tries to decipher it.
+
+   Decoration only: aria-hidden in the markup, inert to the pointer, and
+   painted under the rows so a chip reaching over it still takes the hover. */
+.stack-row {
+    position: relative;
+    z-index: 1;
+}
+
+.glyphfield {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    /* Anchored to the bottom and clipped at the top: the grid is built with
+       more rows than the panel can ever be tall, so it reaches the tab rule
+       at every window height instead of ending in a straight edge partway
+       up. */
+    align-content: end;
+    overflow: hidden;
+    width: min(44%, 20rem);
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-faint);
+    pointer-events: none;
+    user-select: none;
+    /* No edge where the field begins. It holds full strength against the
+       right edge and is gone by the time it reaches the rows, so nothing has
+       to be positioned around the length of any particular row — and the
+       corners soften rather than cutting square against the tab rule. */
+    -webkit-mask-image: radial-gradient(75% 128% at 100% 50%, #000 32%, transparent 100%);
+    mask-image: radial-gradient(75% 128% at 100% 50%, #000 32%, transparent 100%);
+}
+
+.glyphfield span {
+    text-align: center;
+    /* Each glyph surfaces and sinks on its own delay, so the field shimmers
+       unevenly instead of pulsing as one block. */
+    animation: glyph-breathe 7s var(--ease-out-soft) var(--d) infinite;
+}
+
+/* The part of the field that holds still. */
+.glyphfield span[data-still] {
+    animation: none;
+    opacity: calc(var(--o) * 0.62);
+}
+
+@keyframes glyph-breathe {
+    0%,
+    100% {
+        opacity: 0.16;
+    }
+    45% {
+        opacity: calc(var(--o) * 0.92);
+    }
+}
+
+/* Still texture, just not moving texture. */
+@media (prefers-reduced-motion: reduce) {
+    .glyphfield span {
+        animation: none;
+        opacity: calc(var(--o) * 0.62);
+    }
+}
+
+/* A phone has no dead corner to fill — the rows use the whole width. */
+@media (max-width: 639px) {
+    .glyphfield {
+        display: none;
     }
 }

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Mark, { brandVars } from '@/components/Marks'
 import InstagramMark from '@/components/InstagramMark'
+import GlyphField from '@/components/GlyphField'
 import {
     Tooltip,
     TooltipContent,
@@ -87,10 +88,15 @@ function StackRow({ row }) {
 function Stack() {
     return (
         <TooltipProvider delayDuration={80} disableHoverableContent>
-            <div className="stack-rows flex h-full flex-col justify-start">
+            <div className="stack-rows relative flex h-full flex-col justify-start">
                 {stack.map((row) => (
                     <StackRow key={row.label} row={row} />
                 ))}
+
+                {/* The rows leave the bottom-right corner empty at every size,
+                    because the longest of them is nine tiles and the shortest
+                    is four. That corner is the field's whole reason to exist. */}
+                <GlyphField />
             </div>
         </TooltipProvider>
     )
