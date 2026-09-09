@@ -1674,29 +1674,53 @@ li.chip:hover .mark,
    home page's motion. There is no canvas sky here on purpose — it is noise
    behind text, and leaving it out is what lets these routes render to static
    HTML at build time without a browser. */
-.prose-page {
+.read {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     min-height: 100svh;
-    background: var(--bg);
-    padding: clamp(2.5rem, 7vw, 5rem) var(--card-inset-x) 6rem;
+    padding-block: clamp(1.5rem, 4vw, 3rem);
 }
 
-.prose-page > * {
-    max-width: 40rem;
+/* Reading measure, not the front page's. The card grows with the text and
+   the page scrolls, which is why nothing here is clamped to one screen. */
+.read__card {
+    width: 100%;
+    max-width: 46rem;
     margin-inline: auto;
+    padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.5rem, 4.5vw, 3.25rem)
+        clamp(2.5rem, 5vw, 3.5rem);
 }
 
-.prose-head {
-    margin-bottom: 2.5rem;
+.read__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
 }
 
-.prose-head h1 {
-    margin: 0.5rem 0 0.35rem;
+.read__name {
+    color: var(--ink-faint);
+    text-decoration: none;
+    transition: color 0.2s var(--ease-out-soft);
+}
+
+.read__name:hover {
+    color: var(--ink);
+}
+
+.read__head {
+    margin-bottom: 2.25rem;
+}
+
+.read__head h1 {
+    margin: 0 0 0.45rem;
     text-wrap: balance;
 }
 
 .prose-back {
     display: inline-block;
-    margin-bottom: 0.25rem;
     color: var(--ink-faint);
     font-size: 13px;
     font-weight: 450;
@@ -1728,11 +1752,18 @@ li.chip:hover .mark,
 
 .post-link {
     display: block;
-    padding: 1.15rem 1.1rem;
+    padding: 1.25rem 1.1rem;
     margin-inline: -1.1rem;
     border-radius: 14px;
     text-decoration: none;
     transition: background-color 0.2s var(--ease-out-soft);
+}
+
+/* A hairline between entries, but never above the first or below the last —
+   the list should read as one block, not a set of boxes. */
+.post-list li + li .post-link {
+    border-top: 1px solid var(--line);
+    border-radius: 0 0 14px 14px;
 }
 
 .post-link:hover {
@@ -1753,9 +1784,19 @@ li.chip:hover .mark,
 
 .post-link__meta {
     display: block;
-    margin-top: 0.5rem;
+    margin-top: 0.55rem;
     color: var(--ink-faint);
     font-variant-numeric: tabular-nums;
+}
+
+.post-link__title {
+    font-size: 19px;
+    letter-spacing: -0.4px;
+    transition: color 0.2s var(--ease-out-soft);
+}
+
+.post-link:hover .post-link__title {
+    color: var(--ink);
 }
 
 /* ---- the article ---- */
@@ -1875,11 +1916,108 @@ li.chip:hover .mark,
 .hljs-strong { font-weight: 600; }
 
 @media (max-width: 639px) {
-    .prose-page {
-        padding-left: var(--card-pad);
-        padding-right: var(--card-pad);
-    }
-
     .prose { font-size: 16px; }
     .prose h2 { font-size: 21px; }
+
+    /* The code blocks are the one thing that cannot narrow, so they run to
+       the card's edges rather than being squeezed into the text column. */
+    .prose pre {
+        margin-inline: calc(clamp(1.5rem, 4.5vw, 3.25rem) * -1);
+        border-radius: 0;
+    }
+}
+
+/* ---- the writing, in the panel ---- */
+.panel-blog {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 4px;
+}
+
+.panel-blog__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0;
+    margin-block: 0;
+    list-style: none;
+}
+
+.panel-post {
+    display: block;
+    padding: 0.55rem 0.75rem;
+    margin-inline: -0.75rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.2s var(--ease-out-soft);
+}
+
+.panel-post__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.25rem;
+}
+
+/* One line only. Three of these have to sit inside a panel whose height is
+   set by the tallest tab, and a wrapping summary would push the card past
+   the single screen it is built to hold. */
+.panel-post__blurb {
+    display: block;
+    margin-top: 0.1rem;
+    color: var(--ink-faint);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.panel-post:hover {
+    background: var(--bg-raised);
+}
+
+.panel-post__title {
+    color: var(--ink);
+    /* The date must not be pushed off the row by a long title. */
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.panel-post__meta {
+    flex: none;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+}
+
+.panel-blog__more {
+    align-self: flex-start;
+    color: var(--ink-faint);
+    text-decoration: none;
+    transition: color 0.2s var(--ease-out-soft);
+}
+
+.panel-blog__more::after {
+    content: ' →';
+}
+
+.panel-blog__more:hover {
+    color: var(--ink);
+}
+
+@media (max-width: 639px) {
+    .panel-post {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.15rem;
+    }
+
+    /* Stacked, the title has the row to itself and can wrap. */
+    .panel-post__title {
+        overflow: visible;
+        white-space: normal;
+    }
 }

@@ -1,19 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router'
 import { posts } from 'virtual:posts'
-import { profile } from '@/data/site'
-
-const fmt = (iso) =>
-    new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
-    })
+import CardPage from '@/routes/CardPage'
+import { formatDay } from '@/lib/date'
 
 export default function Blog() {
     return (
-        <div className="prose-page">
-            <header className="prose-head">
-                <Link to="/" className="prose-back">{profile.name}</Link>
-                <h1 className="t-lead text-ink">Writing</h1>
+        <CardPage back={{ to: '/', label: 'Back' }}>
+            <header className="read__head">
+                <h1 className="t-hero text-ink">Writing</h1>
+                <p className="t-meta text-ink-faint">
+                    Notes on engineering, product and the agents doing the work.
+                </p>
             </header>
 
             {posts.length === 0 ? (
@@ -28,7 +26,7 @@ export default function Blog() {
                                     <span className="post-link__blurb t-body">{p.description}</span>
                                 )}
                                 <span className="post-link__meta t-meta">
-                                    <time dateTime={p.date}>{fmt(p.date)}</time>
+                                    <time dateTime={p.date}>{formatDay(p.date)}</time>
                                     <span aria-hidden> · </span>
                                     {p.minutes} min read
                                 </span>
@@ -37,6 +35,6 @@ export default function Blog() {
                     ))}
                 </ul>
             )}
-        </div>
+        </CardPage>
     )
 }

@@ -99,6 +99,27 @@ export default function posts() {
                 return `export const posts = ${JSON.stringify(load(root))}`
             }
         },
+        /**
+         * `vite preview` rewrites every unknown path to the root index.html
+         * before it looks for a directory index, so /blog/thing would serve
+         * the home page's head — the prerendered file only appearing with a
+         * trailing slash. Static hosts resolve the file first; this makes the
+         * local preview agree with them, so the thing being tested is the
+         * thing that ships.
+         */
+        configurePreviewServer(server) {
+            server.middlewares.use((req, _res, next) => {
+                if (req.method === 'GET' && !path.extname(req.url.split('?')[0])) {
+                    const url = req.url.split('?')[0].replace(/\/$/, '')
+                    const file = path.join(server.config.build.outDir, url, 'index.html')
+                    if (fs.existsSync(path.resolve(server.config.root, file))) {
+                        req.url = `${url}/index.html`
+                    }
+                }
+                next()
+            })
+        },
+
         configureServer(server) {
             // Editing a post should refresh the page like editing a component.
             server.watcher.add(path.resolve(root, DIR))

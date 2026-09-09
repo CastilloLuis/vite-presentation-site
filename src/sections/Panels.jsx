@@ -10,6 +10,9 @@ import {
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { PANELS, photoHandle, photoNote, photos, stack } from '@/data/site'
 import useMediaQuery, { NARROW } from '@/lib/useMediaQuery'
+import { Link } from 'react-router'
+import { posts } from 'virtual:posts'
+import { formatDay } from '@/lib/date'
 import { play } from '@/lib/sound'
 import { cn } from '@/lib/utils'
 
@@ -93,6 +96,55 @@ function Stack() {
                 ))}
             </div>
         </TooltipProvider>
+    )
+}
+
+/* ---------- Blog ---------- */
+/**
+ * The three most recent, and a way through to the rest. The posts themselves
+ * are separate pages rather than a panel: they are the one thing on this site
+ * worth a link of its own, and a tab cannot be linked to.
+ */
+const RECENT = 3
+
+function Blog() {
+    const recent = posts.slice(0, RECENT)
+
+    if (recent.length === 0) {
+        return (
+            <div className="panel-blog">
+                <p className="t-body text-ink-faint">Nothing published yet.</p>
+            </div>
+        )
+    }
+
+    return (
+        <div className="panel-blog">
+            <ul className="panel-blog__list">
+                {recent.map((p) => (
+                    <li key={p.slug}>
+                        <Link
+                            to={`/blog/${p.slug}`}
+                            className="panel-post"
+                            onPointerEnter={() => play('hover')}
+                        >
+                            <span className="panel-post__head">
+                                <span className="panel-post__title t-body">{p.title}</span>
+                                <span className="panel-post__meta t-meta">
+                                    <time dateTime={p.date}>{formatDay(p.date)}</time>
+                                    <span aria-hidden> · </span>
+                                    {p.minutes} min
+                                </span>
+                            </span>
+                            {p.description && (
+                                <span className="panel-post__blurb t-meta">{p.description}</span>
+                            )}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
+
+        </div>
     )
 }
 
@@ -243,7 +295,7 @@ function Photos() {
     )
 }
 
-const VIEWS = { Stack, Photos }
+const VIEWS = { Stack, Blog, Photos }
 
 export default function Panels() {
     const [active, setActive] = useState(PANELS[0])

@@ -39,7 +39,18 @@ function makeStars(count) {
     }))
 }
 
-export function SkyProvider({ children }) {
+/**
+ * The hour the prerendered pages are built at.
+ *
+ * Those pages are hydrated, which means the server's markup and the browser's
+ * first render have to agree — and the live clock does not agree with itself
+ * across a build machine and a reader six timezones away. They seed from this
+ * instead; the animation loop reads the real clock on its first frame and
+ * eases from here to there, which is the same transition the scrubber makes.
+ */
+export const SEED_HOUR = 13
+
+export function SkyProvider({ children, seed }) {
     const wrapRef = useRef(null)
     const canvasRef = useRef(null)
 
@@ -60,10 +71,10 @@ export function SkyProvider({ children }) {
     // gradient itself is written straight to the element, every frame.
     // Seeded once so the very first paint already has a sky, before the
     // animation loop takes over.
-    const [seedGradient] = useState(() => skyAt(currentHour(profile.timezone)).gradient)
+    const [seedGradient] = useState(() => skyAt(seed ?? currentHour(profile.timezone)).gradient)
 
     const [ui, setUi] = useState(() => {
-        const s = skyAt(currentHour(profile.timezone))
+        const s = skyAt(seed ?? currentHour(profile.timezone))
         return { label: s.label, isDay: s.isDay, bright: s.bright, time: clockLabel(s.hour), ink: s.onSky }
     })
 

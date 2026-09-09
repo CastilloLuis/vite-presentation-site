@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router'
 import ClickFX from '@/components/ClickFX'
 import ContactRail from '@/components/ContactRail'
 import SkyScrubber from '@/components/SkyScrubber'
@@ -42,25 +41,10 @@ export default function Home() {
                     {narrow ? (
                         <footer className="cardfoot card-x">
                             <SkyScrubber horizontal />
-                            <Link
-                                to="/blog"
-                                className="cardmail__link t-ui"
-                                onPointerEnter={() => play('hover')}
-                            >
-                                Writing
-                            </Link>
                             <ContactRail horizontal />
                         </footer>
                     ) : (
                         <footer className="cardmail card-x">
-                            <Link
-                                to="/blog"
-                                className="cardmail__link t-ui"
-                                onPointerEnter={() => play('hover')}
-                            >
-                                Writing
-                            </Link>
-                            <span className="cardmail__dot" aria-hidden>·</span>
                             <a
                                 href={`mailto:${profile.email}`}
                                 className="cardmail__link t-ui"

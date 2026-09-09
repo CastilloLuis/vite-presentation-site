@@ -1,12 +1,9 @@
 import React from 'react'
-import { Link, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import { posts } from 'virtual:posts'
+import CardPage from '@/routes/CardPage'
 import NotFound from '@/routes/NotFound'
-
-const fmt = (iso) =>
-    new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
-    })
+import { formatDay } from '@/lib/date'
 
 export default function Post() {
     const { slug } = useParams()
@@ -15,19 +12,18 @@ export default function Post() {
     if (!post) return <NotFound />
 
     return (
-        <div className="prose-page">
-            <header className="prose-head">
-                <Link to="/blog" className="prose-back">Writing</Link>
-                <h1 className="t-lead text-ink">{post.title}</h1>
+        <CardPage back={{ to: '/blog', label: 'Back' }}>
+            <header className="read__head">
+                <h1 className="t-hero text-ink">{post.title}</h1>
                 <p className="t-meta text-ink-faint">
-                    <time dateTime={post.date}>{fmt(post.date)}</time>
+                    <time dateTime={post.date}>{formatDay(post.date)}</time>
                     <span aria-hidden> · </span>
                     {post.minutes} min read
                 </p>
             </header>
 
-            {/* The markdown is rendered to HTML in the build, not here. */}
-            <article className="prose" dangerouslySetInnerHTML={{ __html: post.html }} />
-        </div>
+            {/* Rendered to HTML in the build, not here. */}
+            <div className="prose" dangerouslySetInnerHTML={{ __html: post.html }} />
+        </CardPage>
     )
 }
