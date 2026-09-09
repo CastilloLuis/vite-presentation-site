@@ -1435,6 +1435,8 @@ li.chip:hover .mark,
 /* Carries the card's bottom inset, so the main column no longer sets it. */
 .cardmail {
     display: flex;
+    align-items: center;
+    gap: 0.55rem;
     justify-content: center;
     padding-top: 0.75rem;
     padding-bottom: var(--card-pad);
@@ -1449,6 +1451,11 @@ li.chip:hover .mark,
     transition:
         color 0.2s var(--ease-out-soft),
         text-decoration-color 0.2s var(--ease-out-soft);
+}
+
+.cardmail__dot {
+    color: var(--ink-faint);
+    opacity: 0.5;
 }
 
 .cardmail__link:hover {
@@ -1539,6 +1546,16 @@ li.chip:hover .mark,
         padding-top: 0.85rem;
         margin-top: 0.5rem;
         border-top: 1px solid var(--line);
+    }
+
+    /* The scrubber and the marks keep the row they had; the link to the
+       writing takes its own beneath them rather than being wedged between
+       the two and stranded when the row wraps. */
+    .cardfoot .cardmail__link {
+        order: 3;
+        flex-basis: 100%;
+        padding-top: 0.15rem;
+        text-align: center;
     }
 
     /* ---- the scrubber, laid on its side ---- */
@@ -1650,4 +1667,219 @@ li.chip:hover .mark,
             width: 3rem;
         }
     }
+}
+
+/* ============ THE WRITING ============
+   A reading page, not a card: one column, generous measure, and none of the
+   home page's motion. There is no canvas sky here on purpose — it is noise
+   behind text, and leaving it out is what lets these routes render to static
+   HTML at build time without a browser. */
+.prose-page {
+    min-height: 100svh;
+    background: var(--bg);
+    padding: clamp(2.5rem, 7vw, 5rem) var(--card-inset-x) 6rem;
+}
+
+.prose-page > * {
+    max-width: 40rem;
+    margin-inline: auto;
+}
+
+.prose-head {
+    margin-bottom: 2.5rem;
+}
+
+.prose-head h1 {
+    margin: 0.5rem 0 0.35rem;
+    text-wrap: balance;
+}
+
+.prose-back {
+    display: inline-block;
+    margin-bottom: 0.25rem;
+    color: var(--ink-faint);
+    font-size: 13px;
+    font-weight: 450;
+    letter-spacing: -0.1px;
+    text-decoration: none;
+    transition: color 0.2s var(--ease-out-soft);
+}
+
+.prose-back::before {
+    content: '← ';
+}
+
+.prose-back:hover {
+    color: var(--ink);
+}
+
+/* ---- the index ---- */
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0;
+    /* Block only: a plain `margin: 0` would cancel the auto side margins
+       that centre every child of the page, and the list would sit off to
+       the left of its own heading. */
+    margin-block: 0;
+    list-style: none;
+}
+
+.post-link {
+    display: block;
+    padding: 1.15rem 1.1rem;
+    margin-inline: -1.1rem;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: background-color 0.2s var(--ease-out-soft);
+}
+
+.post-link:hover {
+    background: var(--bg-raised);
+}
+
+.post-link__title {
+    display: block;
+    color: var(--ink);
+    text-wrap: balance;
+}
+
+.post-link__blurb {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--ink-body);
+}
+
+.post-link__meta {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---- the article ---- */
+.prose {
+    color: var(--ink-body);
+    font-size: 16.5px;
+    line-height: 1.68;
+    letter-spacing: -0.16px;
+}
+
+.prose > * + * {
+    margin-top: 1.15em;
+}
+
+.prose h2,
+.prose h3 {
+    color: var(--ink);
+    letter-spacing: -0.5px;
+    text-wrap: balance;
+    margin-top: 2.2em;
+    margin-bottom: -0.35em;
+}
+
+.prose h2 { font-size: 23px; font-weight: 600; }
+.prose h3 { font-size: 18.5px; font-weight: 600; }
+
+.prose strong { color: var(--ink); font-weight: 600; }
+
+.prose a,
+.prose-a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: rgb(from var(--ink) r g b / 0.3);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.2s var(--ease-out-soft);
+}
+
+.prose a:hover,
+.prose-a:hover {
+    text-decoration-color: rgb(from var(--ink) r g b / 0.75);
+}
+
+.prose ul,
+.prose ol {
+    padding-left: 1.3em;
+}
+
+.prose li + li {
+    margin-top: 0.4em;
+}
+
+.prose blockquote {
+    padding-left: 1.1em;
+    border-left: 2px solid var(--line-strong);
+    color: var(--ink-faint);
+}
+
+.prose img {
+    display: block;
+    border-radius: 12px;
+}
+
+.prose hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin-block: 2.4em;
+}
+
+.prose :not(pre) > code {
+    padding: 0.15em 0.36em;
+    border-radius: 5px;
+    background: var(--bg-raised);
+    box-shadow: inset 0 0 0 1px var(--line);
+    font-size: 0.88em;
+}
+
+.prose pre {
+    position: relative;
+    overflow-x: auto;
+    padding: 1.05rem 1.15rem;
+    border-radius: 14px;
+    background: #14161a;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+    font-size: 13.5px;
+    line-height: 1.62;
+    tab-size: 4;
+}
+
+.prose pre code {
+    color: #d6dae0;
+}
+
+/* The language, quietly, in the corner. */
+.prose pre[data-lang]::after {
+    content: attr(data-lang);
+    position: absolute;
+    top: 0.6rem;
+    right: 0.85rem;
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    color: rgb(255 255 255 / 0.28);
+}
+
+/* Highlighting is applied in the build, so all that is needed here is the
+   palette for the classes it emits. Tuned to the page rather than pulled from
+   a theme file, which would ship a stylesheet for languages never used. */
+.hljs-comment, .hljs-quote { color: #6b7480; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-type { color: #c58fff; }
+.hljs-string, .hljs-regexp, .hljs-addition { color: #9ad48a; }
+.hljs-number, .hljs-symbol, .hljs-bullet { color: #f0a875; }
+.hljs-title, .hljs-name, .hljs-section, .hljs-title.function_ { color: #78c2ff; }
+.hljs-attr, .hljs-attribute, .hljs-variable, .hljs-template-variable { color: #ffd479; }
+.hljs-built_in, .hljs-class .hljs-title { color: #6fd7c5; }
+.hljs-meta, .hljs-deletion { color: #ff8a92; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 600; }
+
+@media (max-width: 639px) {
+    .prose-page {
+        padding-left: var(--card-pad);
+        padding-right: var(--card-pad);
+    }
+
+    .prose { font-size: 16px; }
+    .prose h2 { font-size: 21px; }
 }
