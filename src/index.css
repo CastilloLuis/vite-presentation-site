@@ -342,6 +342,31 @@ li.chip:hover .mark,
     margin: 0 0.1em;
 }
 
+/* The hit area, which is not the box. The box only ever reserves the closed
+   width — that is what keeps the sentence from reflowing — but the tiles fan
+   out to nearly twice that, so once open, both gaps between them and the whole
+   right half of the fan sit outside it. Slide off a tile there and :hover
+   drops, the stack shuts under the cursor, and the tile arriving back
+   underneath opens it again: a flicker loop. This pad grows with the fan so
+   the group stays one continuous target from the moment it opens until the
+   pointer really leaves. It sits behind the tiles and, closed, inside the
+   reserved box, so it changes neither the layout nor what is clickable. */
+.app-stack::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* Open, it also takes a little height: the hovered tile lifts and scales past
+   the line, and a pointer drifting a pixel above a tile should not close
+   everything. */
+.app-stack:hover::before,
+.app-stack:focus-within::before {
+    inset: -0.3em auto -0.3em 0;
+    width: var(--stack-open-w);
+}
+
 .app-stack__item {
     position: absolute;
     top: 0;
